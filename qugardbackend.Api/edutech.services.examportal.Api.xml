@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>examportal-Backend</name>
+    </assembly>
+    <members>
+        <member name="M:examportal.Controllers.WeatherForecastController.Get">
+            <summary>
+            get weather
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:examportal.Migrations.initial">
+            <inheritdoc />
+        </member>
+        <member name="M:examportal.Migrations.initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:examportal.Migrations.initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:examportal.Migrations.initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="P:examportal.Data.Entities.BusinessOption.Type">
+            <summary>
+            1=Text; 2=number; 3=date; 4=boolean
+            </summary>
+        </member>
+    </members>
+</doc>

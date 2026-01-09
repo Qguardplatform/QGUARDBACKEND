@@ -1,0 +1,17 @@
+[
+    {
+        "RoleName": "SYSTEMADMIN"
+    },
+    {
+        "RoleName": "INSTITUTIONADMIN"
+    },
+    {
+        "RoleName": "EXAMINER"
+    },
+    {
+        "RoleName": "CANDIDATE"
+    },
+    {
+        "RoleName": "TUTOR"
+    }
+]

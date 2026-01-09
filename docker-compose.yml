@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  examportal-api:
+    image: examportal-api
+    build:
+      context: .
+      dockerfile: edutech.services.examportal.Api/alpine.Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Test
+      ConnectionStrings__DefaultConString: "Server=edutech-mssql-test0.public.8435fcbd0e3a.database.windows.net,3342;Database=edutech.examportalv2.db;user id=edutech_mssql_test;password=Ty676Uiuu001etyrdf4;MultipleActiveResultSets=true"
+      JWT__ValidIssuer: "http://localhost:5275"
+      JWT__ValidAudience: "examportaldev"
+      JWT__Secret: "CTRLYM00list0OLlMQG6VVVpwatch1OH7XINTernalzyr7gHrteyeehApi"
+      JWT__Audiences__0: "http://10.100.33.110:9501"
+      JWT__Audiences__1: "https://10.100.33.110:9501"
+      JWT__Audiences__2: "https://localhost:44310/"
+      JWT__Audiences__3: "https://localhost:5275/"
+      JWT__Audiences__4: "https://localhost:7211/"
+      JWT__Issuers__0: "https://localhost:44310/"
+      JWT__Issuers__1: "https://localhost:5275/"
+      JWT__Issuers__2: "https://localhost:7211/"
+      JWT__ClientId: "TU3cLPx8DuPTgirRrj7VwotHZmsMKIAAQLXyN2OfgFBmGetql3iv6KoxYAa0"
+      JWT__AccessTokenExpiration: 60
+      JWT__RefreshTokenExpiration: 20
+      MailSetting__MailFromName: "examportalV2"
+      MailSetting__MailFrom: "noreply@vigilearn.com"
+      MailSetting__SMTPServer: "email-smtp.us-east-1.amazonaws.com"
+      MailSetting__SMTPUserName: "AKIA2J6MHZRHD2FEGVRT"
+      MailSetting__SMTPPassword: "BBiQcZCr0DSsYG4w5CO+v9rWm37E5PuVg6RJbhhH0iHr"
+      MailSetting__SMTPPORT: 587
+    ports:
+      - "35365:80"
+    restart: always

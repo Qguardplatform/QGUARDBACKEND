@@ -1,0 +1,155 @@
+﻿namespace examportal.EmailTemplate
+{
+    public static class EmailTemplates
+    {
+
+        public static string NewPasswordEmailTemplate()
+        {
+            return $@"
+<!DOCTYPE html>
+<html lang=""en"">
+
+<head>
+    <meta charset=""UTF-8"">
+    <title>Verify Your Account</title>
+    <link href=""https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"" rel=""stylesheet"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <style>
+        body,
+        p,
+        a,
+        h1,
+        h2,
+        h3 {{
+            font-family: 'Poppins', Arial, sans-serif !important;
+        }}
+
+        /* Reset for consistent rendering */
+        body,
+        table,
+        td,
+        a {{
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }}
+
+        table {{
+            border-collapse: collapse !important;
+        }}
+
+        body {{
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background-color: #f5f5f5;
+        }}
+
+        /* Mobile styles */
+        @media screen and (max-width: 600px) {{
+            .email-container {{
+                width: 100% !important;
+                padding: 0 !important;
+            }}
+
+            .email-content {{
+                padding: 20px !important;
+            }}
+
+            .button {{
+                width: 100% !important;
+                display: block !important;
+                text-align: center !important;
+            }}
+
+            .link-box {{
+                font-size: 13px !important;
+                word-break: break-all;
+            }}
+        }}
+    </style>
+</head>
+
+<body style=""background-color: #f5f5f5; font-family: Arial, sans-serif; margin: 0; padding: 0;"">
+    <table role=""presentation"" width=""100%"" cellspacing=""0"" cellpadding=""0"" border=""0""
+           style=""background-color: #f5f5f5; padding: 20px 0;"">
+        <tr>
+            <td align=""center"">
+                <table role=""presentation"" class=""email-container"" width=""500"" cellspacing=""0"" cellpadding=""0""
+                       border=""0"" style=""background-color: #ffffff; width: 500px; border-radius: 4px; overflow: hidden;"">
+                    <!-- Header -->
+                    <tr>
+                        <td style=""padding: 20px; border-bottom: 1px solid #D2D5DA"">
+                            <img src=""./exam-portal-logo.png"" alt=""examPortal"" style=""height: 24px;"">
+                        </td>
+                    </tr>
+                    <!-- Body -->
+                    <tr>
+                        <td class=""email-content"" style=""padding: 30px;"">
+                            <h2 style=""margin: 0 0 15px; color: #111827; font-size: 22px; font-weight: 700;"">
+                                New Default Credentials
+                            </h2>
+                            <p style=""margin: 0 0 15px; color: #333; font-size: 14px;"">Hi ##NAME##</p>
+                            <p style=""margin: 0 0 15px; color: #333; font-size: 14px;"">
+                                We’re glad to reset your password!<br>
+                                Your account credentials has been updated on the Examination Portal.
+                            </p>
+                            <p style=""margin: 0 0 15px; color: #333; font-size: 14px;"">
+                                Here are your updated account login
+                                details.
+                            </p>
+                            <p style=""margin: 0 0 5px; font-size: 14px;"">
+                                Email Address: <strong>
+                                    <a href=""mailto:##EMAIL#""
+                                       style=""color: #374151; font-weight: 600; text-decoration: none;"">##EMAIL##</a>
+                                </strong>
+                            </p>
+                            <p style=""margin: 0 0 25px; font-size: 14px;"">
+                                New Default Password: <strong>
+                                    <span style=""color: #374151; font-weight: 600;"">##PASSWORD##</span>
+                                </strong>
+                            </p>
+                            <!-- Button -->
+                            <a href=""##URL##"" class=""button""
+                               style=""display: inline-block; background-color: #F26628; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; font-size: 14px;"">
+                                Proceed to Login
+                            </a>
+
+                            <p style=""margin-top: 25px; margin-bottom: 10px; color: #333; font-size: 14px;"">
+                                You can also
+                                copy the link and paste it on your browser:
+                            </p>
+
+                            <!-- Link Box -->
+                            <div class=""link-box""
+                                 style=""background-color: #FFEDE0; padding: 12px; border-radius: 4px; color: #F26628; font-size: 12px; letter-spacing: 0.2px;"">
+                                ##URL##
+                            </div>
+
+                            <p style=""margin-top: 10px; margin-bottom: 10px; color: #333; font-size: 14px;"">
+                                To secure
+                                your account, you will
+                                be required to change your account password on the first login.
+                            </p>
+
+                            <!-- Footer -->
+                            <p style=""margin-top: 30px; background-color: #ffffff; font-size: 14px; color: #333;"">
+
+                                If you have any challenge accessing your account kindly reach out to us on
+                                <a href=""mailto:support@vigilearn.com""
+                                   style=""color: #000; font-weight: bold; text-decoration: none;"">support@vigilearn.com</a>.
+                            </p>
+                        </td>
+
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
+";
+        }
+    }
+}
