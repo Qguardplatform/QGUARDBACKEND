@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace examportal.Filter
+namespace qguardbackend.Filter
 {
     public class JsonWithFilesFormDataModelBinder : IModelBinder
     {

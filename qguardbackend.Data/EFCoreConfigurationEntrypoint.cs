@@ -1,4 +1,4 @@
-﻿namespace examportal.Data;
+﻿namespace qguardbackend.Data;
 
 public class EFCoreConfigurationEntrypoint
 {

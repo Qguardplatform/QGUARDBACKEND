@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace examportal.Filter.Security
+namespace qguardbackend.Filter.Security
 {
     public class UserPrincipal : ClaimsPrincipal
     {

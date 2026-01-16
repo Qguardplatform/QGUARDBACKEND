@@ -1,4 +1,4 @@
-﻿namespace examportal.Shared.Interfaces;
+﻿namespace qguardbackend.Shared.Interfaces;
 
 public interface IEntity
 {

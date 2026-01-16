@@ -2,7 +2,7 @@
 using qguardbackend.Data.DTOs;
 using qguardbackend.Data.DTOs.ResponseDto;
 using qguardbackend.Data.Entities;
-using examportal.Data.Entities;
+using qguardbackend.Data.Entities;
 using System.Data;
 
 namespace qguardbackend.Core.Profiles;

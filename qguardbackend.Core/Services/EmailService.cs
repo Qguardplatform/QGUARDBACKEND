@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Net.Mail;
 using Microsoft.EntityFrameworkCore;
-using SISService.BoilerPlate.Service.Interfaces;
-using SISService.Core.ConfigModels;
+using qguardbackend.BoilerPlate.Service.Interfaces;
+using qguardbackend.Core.ConfigModels;
 using Microsoft.Extensions.Hosting;
 using qguardbackend.Data.DTOs;
 using qguardbackend.Data.DbContext;
@@ -11,7 +11,7 @@ using qguardbackend.Data.DTOs.EmailDtos;
 using qguardbackend.Data.DTOs.Results;
 using qguardbackend.Data.Constants;
 using Newtonsoft.Json;
-using examportal.EmailTemplate;
+using qguardbackend.EmailTemplate;
 
 namespace qguardbackend.Core.Services
 {
@@ -409,7 +409,7 @@ namespace qguardbackend.Core.Services
             try
             {
                 string projectRootPath = _hostingEnvironment.ContentRootPath;
-                string confirmationEmailPath = Path.Combine(projectRootPath, "EmailTemplate/WelcomeToExamPortalEmail.html");
+                string confirmationEmailPath = Path.Combine(projectRootPath, "EmailTemplate/WelcomeToqguardbackendEmail.html");
 
                 string fileContents = File.ReadAllText(confirmationEmailPath);
                 fileContents = fileContents.Replace("##NAME##", $"{model.Fullname}");

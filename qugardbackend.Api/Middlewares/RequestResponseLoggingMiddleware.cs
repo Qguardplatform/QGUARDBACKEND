@@ -1,4 +1,4 @@
-﻿namespace examportal.Middlewares
+﻿namespace qguardbackend.Middlewares
 {
     public class RequestResponseLoggingMiddleware
     {

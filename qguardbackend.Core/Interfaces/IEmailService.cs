@@ -2,7 +2,7 @@
 using qguardbackend.Data.DTOs.EmailDtos;
 using qguardbackend.Data.DTOs.Results;
 
-namespace SISService.BoilerPlate.Service.Interfaces
+namespace qguardbackend.BoilerPlate.Service.Interfaces
 {
     public interface IEmailService
     {

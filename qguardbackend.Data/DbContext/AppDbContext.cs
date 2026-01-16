@@ -1,9 +1,9 @@
-﻿using examportal.Data.Entities;
+﻿using qguardbackend.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using qguardbackend.Data.Entities;
 using qguardbackend.Data.DTOs;
-using examportal.Data.Model;
+using qguardbackend.Data.Model;
 using Microsoft.AspNetCore.Identity;
 
 namespace qguardbackend.Data.DbContext;

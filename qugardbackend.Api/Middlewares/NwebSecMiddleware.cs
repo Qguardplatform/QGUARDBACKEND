@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 
-namespace examportal.Api.Middleware;
+namespace qguardbackend.Api.Middleware;
 
 public static class NwebSecMiddleware
 {

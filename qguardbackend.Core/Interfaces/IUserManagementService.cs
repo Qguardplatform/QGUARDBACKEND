@@ -2,8 +2,8 @@
 using qguardbackend.Data.DTOs;
 using qguardbackend.Data.DTOs.Results;
 using qguardbackend.Data.Entities;
-using examportal.Shared.Pagination;
-using examportal.Data.Entities;
+using qguardbackend.Shared.Pagination;
+using qguardbackend.Data.Entities;
 using Microsoft.AspNetCore.Http;
 using qguardbackend.Data.DTOs.RequestDto;
 

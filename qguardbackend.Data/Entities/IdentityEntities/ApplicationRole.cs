@@ -1,7 +1,7 @@
 ﻿using qguardbackend.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace examportal.Data.Entities
+namespace qguardbackend.Data.Entities
 {
     public class ApplicationRole : IdentityRole
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace examportal.Api.ServiceExtensions;
+namespace qguardbackend.Api.ServiceExtensions;
 
 public static class EnumExtensions
 {

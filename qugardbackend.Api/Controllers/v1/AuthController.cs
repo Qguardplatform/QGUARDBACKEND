@@ -3,11 +3,11 @@ using qguardbackend.Core.Services;
 using qguardbackend.Data.Constants;
 using qguardbackend.Data.DTOs.ResponseDto;
 using qguardbackend.Data.DTOs.Results;
-using examportal.Api.Controllers;
+using qguardbackend.Api.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace examportal.Controllers.v1
+namespace qguardbackend.Controllers.v1
 {
     [ApiVersion("1.0")]
     public class AuthController : BaseController

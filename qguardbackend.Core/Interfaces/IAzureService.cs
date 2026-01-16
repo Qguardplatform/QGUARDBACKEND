@@ -1,4 +1,4 @@
-﻿namespace SISService.BoilerPlate.Service.Interfaces
+﻿namespace qguardbackend.BoilerPlate.Service.Interfaces
 {
     public interface IAzureService
     {

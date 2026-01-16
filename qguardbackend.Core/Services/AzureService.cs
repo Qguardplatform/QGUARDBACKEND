@@ -2,8 +2,8 @@
 using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using SISService.BoilerPlate.Service.Interfaces;
-using SISService.Core.ConfigModels;
+using qguardbackend.BoilerPlate.Service.Interfaces;
+using qguardbackend.Core.ConfigModels;
 
 namespace qguardbackend.Core.Services
 {

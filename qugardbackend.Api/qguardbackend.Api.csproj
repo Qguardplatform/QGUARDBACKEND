@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>examportal</RootNamespace>
+    <RootNamespace>qguardbackend</RootNamespace>
     <UserSecretsId>39ae69a4-7bab-4ccb-9757-f116cb680dce</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -136,7 +136,7 @@
     <None Update="EmailTemplate\NewDefaultPasswordEmail.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="EmailTemplate\WelcomeToExamPortalEmail.html">
+    <None Update="EmailTemplate\WelcomeToqguardbackendEmail.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

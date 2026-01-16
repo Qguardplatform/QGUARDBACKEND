@@ -1,6 +1,6 @@
 ﻿using qguardbackend.Data.Constants;
 using qguardbackend.Data.DTOs.Results;
-using examportal.Filter.Security;
+using qguardbackend.Filter.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 using System.Text;
 
-namespace examportal.Api.Controllers;
+namespace qguardbackend.Api.Controllers;
 
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]

@@ -4,7 +4,7 @@ using qguardbackend.Data.DTOs.Results;
 using System.Net;
 using System.Text.Json;
 
-namespace examportal.Middlewares
+namespace qguardbackend.Middlewares
 {
     public class GlobalExceptionMiddleware
     {

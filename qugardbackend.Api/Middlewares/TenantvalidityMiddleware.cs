@@ -1,6 +1,6 @@
 ﻿using qguardbackend.Core.Interfaces;
 
-namespace examportal.Middlewares
+namespace qguardbackend.Middlewares
 {
     public class TenantValidityMiddleware
     {

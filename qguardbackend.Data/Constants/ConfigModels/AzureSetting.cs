@@ -1,4 +1,4 @@
-﻿namespace SISService.Core.ConfigModels
+﻿namespace qguardbackend.Core.ConfigModels
 {
     public class AzureSetting
     {

@@ -1,5 +1,5 @@
 ﻿using qguardbackend.Data.Abstracts;
-using examportal.Data.Entities;
+using qguardbackend.Data.Entities;
 
 namespace qguardbackend.Data.Entities
 {

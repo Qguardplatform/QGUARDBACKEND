@@ -1,4 +1,4 @@
-﻿using examportal.Api.ServiceExtensions;
+﻿using qguardbackend.Api.ServiceExtensions;
 
 namespace qguardbackend.Data.Enums
 {

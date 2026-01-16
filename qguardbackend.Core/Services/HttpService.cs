@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using qguardbackend.Core.Interfaces;
 
-namespace SISService.BoilerPlate.Service.Implementations
+namespace qguardbackend.BoilerPlate.Service.Implementations
 {
     public class HttpService : IHttpService
     {

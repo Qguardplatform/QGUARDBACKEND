@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace examportal.Api.ServiceExtensions;
+namespace qguardbackend.Api.ServiceExtensions;
 
 public static class ModelStateExtensions
 {

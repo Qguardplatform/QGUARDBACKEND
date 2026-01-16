@@ -1,4 +1,4 @@
-﻿using examportal.Data.Entities;
+﻿using qguardbackend.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using qguardbackend.Data.DbContext;
@@ -7,7 +7,7 @@ using qguardbackend.Core.Interfaces;
 using qguardbackend.Core.Services;
 using qguardbackend.Core.Profiles;
 using Asp.Versioning.ApiExplorer;
-using examportal.Api.Middleware;
+using qguardbackend.Api.Middleware;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,13 +18,13 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
-using SISService.Core.ConfigModels;
-using SISService.BoilerPlate.Service.Interfaces;
-using SISService.BoilerPlate.Service.Implementations;
+using qguardbackend.Core.ConfigModels;
+using qguardbackend.BoilerPlate.Service.Interfaces;
+using qguardbackend.BoilerPlate.Service.Implementations;
 using qguardbackend.Core.BackGroundService;
 using Amazon.Runtime.Internal.Util;
 
-namespace examportal.Api.ServiceExtensions;
+namespace qguardbackend.Api.ServiceExtensions;
 
 public static class ApplicationServicesExtension
 {

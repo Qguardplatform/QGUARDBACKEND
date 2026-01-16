@@ -4,7 +4,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
-namespace examportal.Api.ServiceExtensions;
+namespace qguardbackend.Api.ServiceExtensions;
 
 public static class SwaggerConfigurationExtension
 {

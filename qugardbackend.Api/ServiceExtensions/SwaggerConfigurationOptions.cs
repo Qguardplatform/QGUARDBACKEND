@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Asp.Versioning.ApiExplorer;
 
-namespace examportal.Api.ServiceExtensions;
+namespace qguardbackend.Api.ServiceExtensions;
 
 public class SwaggerConfigurationOptions(IApiVersionDescriptionProvider _provider) : IConfigureOptions<SwaggerGenOptions>
 {

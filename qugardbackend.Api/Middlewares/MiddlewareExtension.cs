@@ -1,6 +1,6 @@
-﻿using examportal.Middlewares;
+﻿using qguardbackend.Middlewares;
 
-namespace examportal.Api.Middleware;
+namespace qguardbackend.Api.Middleware;
 
 public static class MiddlewareExtension
 {

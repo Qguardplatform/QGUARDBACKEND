@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using SISService.BoilerPlate.Service.Interfaces;
+using qguardbackend.BoilerPlate.Service.Interfaces;
 
 namespace qguardbackend.Core.BackGroundService
 {

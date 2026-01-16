@@ -1,5 +1,5 @@
 ﻿
-namespace examportal.Shared.Pagination
+namespace qguardbackend.Shared.Pagination
 {
     public class PagedList<T>
     {

@@ -2,11 +2,11 @@
 using qguardbackend.Data.Constants;
 using qguardbackend.Data.DTOs.Results;
 using qguardbackend.Data.DTOs;
-using examportal.Api.Controllers;
+using qguardbackend.Api.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
-namespace examportal.Controllers.v1
+namespace qguardbackend.Controllers.v1
 {
     [ApiVersion("1.0")]
     [Authorize]

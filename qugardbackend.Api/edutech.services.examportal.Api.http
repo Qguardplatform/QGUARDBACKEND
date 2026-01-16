@@ -1,6 +1,6 @@
-@examportal_HostAddress = http://localhost:5275
+@qguardbackend_HostAddress = http://localhost:5275
 
-GET {{examportal_HostAddress}}/weatherforecast/
+GET {{qguardbackend_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

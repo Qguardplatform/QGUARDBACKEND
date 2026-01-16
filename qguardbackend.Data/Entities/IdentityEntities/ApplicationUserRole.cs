@@ -1,10 +1,10 @@
 ﻿using qguardbackend.Data.Entities;
-using examportal.Data.Entities;
+using qguardbackend.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace examportal.Data.Model;
+namespace qguardbackend.Data.Model;
 
 public class ApplicationUserRole : IdentityUserRole<string>
 {

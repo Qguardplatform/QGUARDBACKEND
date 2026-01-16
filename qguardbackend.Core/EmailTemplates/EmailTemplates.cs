@@ -1,4 +1,4 @@
-﻿namespace examportal.EmailTemplate
+﻿namespace qguardbackend.EmailTemplate
 {
     public static class EmailTemplates
     {
@@ -80,7 +80,7 @@
                     <!-- Header -->
                     <tr>
                         <td style=""padding: 20px; border-bottom: 1px solid #D2D5DA"">
-                            <img src=""./exam-portal-logo.png"" alt=""examPortal"" style=""height: 24px;"">
+                            <img src=""./exam-portal-logo.png"" alt=""qguardbackend"" style=""height: 24px;"">
                         </td>
                     </tr>
                     <!-- Body -->

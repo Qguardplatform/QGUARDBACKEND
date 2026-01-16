@@ -116,7 +116,7 @@ namespace qguardbackend.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("examportal.Data.Entities.ApplicationRole", b =>
+            modelBuilder.Entity("qguardbackend.Data.Entities.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -143,7 +143,7 @@ namespace qguardbackend.Data.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("examportal.Data.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("qguardbackend.Data.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -289,7 +289,7 @@ namespace qguardbackend.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("examportal.Data.Model.ApplicationUserRole", b =>
+            modelBuilder.Entity("qguardbackend.Data.Model.ApplicationUserRole", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -312,7 +312,7 @@ namespace qguardbackend.Data.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("examportal.Data.Model.SystemAdminOtherTenantsRole", b =>
+            modelBuilder.Entity("qguardbackend.Data.Model.SystemAdminOtherTenantsRole", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -701,7 +701,7 @@ namespace qguardbackend.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("examportal.Data.Entities.ApplicationRole", null)
+                    b.HasOne("qguardbackend.Data.Entities.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -710,7 +710,7 @@ namespace qguardbackend.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("examportal.Data.Entities.ApplicationUser", null)
+                    b.HasOne("qguardbackend.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -719,7 +719,7 @@ namespace qguardbackend.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("examportal.Data.Entities.ApplicationUser", null)
+                    b.HasOne("qguardbackend.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -728,26 +728,26 @@ namespace qguardbackend.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("examportal.Data.Entities.ApplicationUser", null)
+                    b.HasOne("qguardbackend.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("examportal.Data.Model.ApplicationUserRole", b =>
+            modelBuilder.Entity("qguardbackend.Data.Model.ApplicationUserRole", b =>
                 {
-                    b.HasOne("examportal.Data.Entities.ApplicationUser", null)
+                    b.HasOne("qguardbackend.Data.Entities.ApplicationUser", null)
                         .WithMany("UserRoles")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("examportal.Data.Entities.ApplicationRole", "Role")
+                    b.HasOne("qguardbackend.Data.Entities.ApplicationRole", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("examportal.Data.Entities.ApplicationUser", null)
+                    b.HasOne("qguardbackend.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -756,13 +756,13 @@ namespace qguardbackend.Data.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("examportal.Data.Model.SystemAdminOtherTenantsRole", b =>
+            modelBuilder.Entity("qguardbackend.Data.Model.SystemAdminOtherTenantsRole", b =>
                 {
-                    b.HasOne("examportal.Data.Entities.ApplicationRole", "ApplicationRole")
+                    b.HasOne("qguardbackend.Data.Entities.ApplicationRole", "ApplicationRole")
                         .WithMany()
                         .HasForeignKey("RoleId");
 
-                    b.HasOne("examportal.Data.Entities.ApplicationUser", "ApplicationUser")
+                    b.HasOne("qguardbackend.Data.Entities.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
 
@@ -801,19 +801,19 @@ namespace qguardbackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("examportal.Data.Entities.ApplicationRole", "Role")
+                    b.HasOne("qguardbackend.Data.Entities.ApplicationRole", "Role")
                         .WithMany("RolePermissions")
                         .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("examportal.Data.Entities.ApplicationRole", b =>
+            modelBuilder.Entity("qguardbackend.Data.Entities.ApplicationRole", b =>
                 {
                     b.Navigation("RolePermissions");
                 });
 
-            modelBuilder.Entity("examportal.Data.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("qguardbackend.Data.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("UserRoles");
                 });

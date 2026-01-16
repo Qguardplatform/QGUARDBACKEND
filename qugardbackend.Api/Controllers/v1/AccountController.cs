@@ -5,12 +5,12 @@ using qguardbackend.Data.DTOs.Error;
 using qguardbackend.Data.DTOs.RequestDto;
 using qguardbackend.Data.DTOs.ResponseDto;
 using qguardbackend.Data.DTOs.Results;
-using examportal.Api.Controllers;
-using examportal.Shared.Pagination;
+using qguardbackend.Api.Controllers;
+using qguardbackend.Shared.Pagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace examportal.Controllers.v1
+namespace qguardbackend.Controllers.v1
 {
     [ApiVersion("1.0")]
     public class AccountController : BaseController

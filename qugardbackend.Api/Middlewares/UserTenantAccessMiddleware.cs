@@ -2,7 +2,7 @@
 using qguardbackend.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 
-namespace examportal.Middlewares
+namespace qguardbackend.Middlewares
 {
     public class UserTenantAccessMiddleware
     {
