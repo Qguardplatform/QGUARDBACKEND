@@ -19,6 +19,6 @@ namespace qguardbackend.Data.Entities
         public string RoleId { get; set; }
         public long PriviledgeId { get; set; }
         public ApplicationRole Role { get; set; }
-        public Priviledge Permission { get; set; }
+        //public Priviledge Permission { get; set; }
     }
 }

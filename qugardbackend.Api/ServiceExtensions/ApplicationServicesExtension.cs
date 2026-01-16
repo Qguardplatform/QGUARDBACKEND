@@ -45,40 +45,40 @@ public static class ApplicationServicesExtension
 
         services.AddAWSService<IAmazonS3>();
         services.AddSingleton<EmailNotificationChannel>();
-        services.AddHostedService<EmailNotificationBackgroundService>();
+        //services.AddHostedService<EmailNotificationBackgroundService>();
 
         services.AddSingleton<IBackgroundEmailQueue, BackgroundEmailQueue>();
         services.AddHostedService<CandidateUploadEmailWorker>();
 
         //configure services
         services.AddScoped<IS3Service, S3Service>();
-        services.AddScoped<IInstitutionService, InstitutionService>();
+        //services.AddScoped<IInstitutionService, InstitutionService>();
         services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IHttpService, HttpService>();
+        //services.AddScoped<IHttpService, HttpService>();
         services.AddScoped<IEmailService, EmailService>();
-        services.AddScoped<IAuditLogService, AuditLogService>();
+        //services.AddScoped<IAuditLogService, AuditLogService>();
         services.AddScoped<IAzureService, AzureService>();
-        services.AddScoped<ICandidateService, CandidateService>();
-        services.AddScoped<IDepartmentService, DepartmentService>();
-        services.AddScoped<IFacultyService, FacultyService>();
-        services.AddScoped<ILevelService, LevelService>();
-        services.AddScoped<IProgramService, ProgramService>();
-        services.AddScoped<IQuestionBankService, QuestionBankService>();
+        //services.AddScoped<ICandidateService, CandidateService>();
+        //services.AddScoped<IDepartmentService, DepartmentService>();
+        //services.AddScoped<IFacultyService, FacultyService>();
+        //services.AddScoped<ILevelService, LevelService>();
+        //services.AddScoped<IProgramService, ProgramService>();
+        //services.AddScoped<IQuestionBankService, QuestionBankService>();
         services.AddScoped<IRoleService, RoleService>();
-        services.AddScoped<ISemesterService, SemesterService>();
-        services.AddScoped<ISessionService, SessionService>();
+        //services.AddScoped<ISemesterService, SemesterService>();
+        //services.AddScoped<ISessionService, SessionService>();
         services.AddScoped<ISettingsService, SettingsService>();
         services.AddScoped<IStaticDatas, StaticDatas>();
         services.AddScoped<IUserManagementService, UserManagementService>();
-        services.AddScoped<IExamScheduleService, ExamScheduleService>();
-        services.AddScoped<IExamService, ExamService>();
-        services.AddScoped<ICourseService, CourseService>();
-        services.AddScoped<ITutorsService, TutorsService>();
-        services.AddScoped<IProctorService, ProctorService>();
-        services.AddScoped<IDashboardService, DashboardService>();
-        services.AddScoped<IEnforcementActionService, EnforcementActionService>();
-        services.AddScoped<IEnforcementModeService, EnforcementModeService>();
-        services.AddScoped<IProctorMeTrackerService, ProctorMeTrackerService>();
+        //services.AddScoped<IExamScheduleService, ExamScheduleService>();
+        //services.AddScoped<IExamService, ExamService>();
+        //services.AddScoped<ICourseService, CourseService>();
+        //services.AddScoped<ITutorsService, TutorsService>();
+        //services.AddScoped<IProctorService, ProctorService>();
+        //services.AddScoped<IDashboardService, DashboardService>();
+        //services.AddScoped<IEnforcementActionService, EnforcementActionService>();
+        //services.AddScoped<IEnforcementModeService, EnforcementModeService>();
+        //services.AddScoped<IProctorMeTrackerService, ProctorMeTrackerService>();
 
         return services;
     }
@@ -142,13 +142,13 @@ public static class ApplicationServicesExtension
                 var staticSvc = services.GetRequiredService<IStaticDatas>();
                 var roleSvc = services.GetRequiredService<IRoleService>();
                 var uSvc = services.GetRequiredService<IUserManagementService>();
-                var iISvc = services.GetRequiredService<IInstitutionService>();
-                var semSvc = services.GetRequiredService<ISemesterService>();
-                var sesSvc = services.GetRequiredService<ISessionService>();
-                var aSvc = services.GetRequiredService<IEnforcementActionService>();
-                var mSvc = services.GetRequiredService<IEnforcementModeService>();
+                //var iISvc = services.GetRequiredService<IInstitutionService>();
+                //var semSvc = services.GetRequiredService<ISemesterService>();
+                //var sesSvc = services.GetRequiredService<ISessionService>();
+                //var aSvc = services.GetRequiredService<IEnforcementActionService>();
+                //var mSvc = services.GetRequiredService<IEnforcementModeService>();
 
-                DbContextInitializer.Initialize(context, settingSvc, staticSvc, roleSvc, uSvc, iISvc, semSvc, sesSvc, aSvc, mSvc).Wait();
+                DbContextInitializer.Initialize(context, settingSvc, staticSvc, roleSvc, uSvc/*, iISvc, semSvc, sesSvc, aSvc, mSvc*/).Wait();
             }
             catch (Exception ex)
             {

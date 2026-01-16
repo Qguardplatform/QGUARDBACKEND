@@ -14,15 +14,17 @@ namespace qguardbackend.Core.Services
     {
         private readonly ILogger<SettingsService> _logger;
         private readonly AppDbContext _context;
-        private readonly IAuditLogService _auditLogService;
+        //private readonly IAuditLogService _auditLogService;
 
         public SettingsService(ILogger<SettingsService> logger,
-            AppDbContext context,
-            IAuditLogService auditLogService)
+            AppDbContext context
+            //,
+            //IAuditLogService auditLogService
+            )
         {
             _logger = logger;
             _context = context;
-            _auditLogService = auditLogService;
+            //_auditLogService = auditLogService;
         }
         public async Task<CustomResult<CreateOtherSettingModel>> CreateSettings(CreateOtherSettingModel model, string createdBy)
         {
@@ -41,7 +43,7 @@ namespace qguardbackend.Core.Services
                         await _context.Settings.AddAsync(settings);
                     }
                     await _context.SaveChangesAsync();
-                    await _auditLogService.AddToAudit((int)AuditActionType.Create, "Settings", $"User [{createdBy}] created a new settings - {model.Name} at {DateTime.UtcNow}.");
+                    //await _auditLogService.AddToAudit((int)AuditActionType.Create, "Settings", $"User [{createdBy}] created a new settings - {model.Name} at {DateTime.UtcNow}.");
                     return CustomResult<CreateOtherSettingModel>.Success(model);
                 }
                 return CustomResult<CreateOtherSettingModel>.ErrorOccured("Invalid request", ResponseCodes.BadRequestErrorCode);
@@ -64,7 +66,7 @@ namespace qguardbackend.Core.Services
                 }
                 _context.Settings.Remove(setting);
                 await _context.SaveChangesAsync();
-                await _auditLogService.AddToAudit((int)AuditActionType.Delete, "Settings", $"User [{createdBy}] deleted a setting - {setting.Name} at {DateTime.UtcNow}.");
+                //await _auditLogService.AddToAudit((int)AuditActionType.Delete, "Settings", $"User [{createdBy}] deleted a setting - {setting.Name} at {DateTime.UtcNow}.");
 
                 return CustomResult<string>.Success(ResponseCodes.SuccessCode, "Settings successfully deleted");
             }
@@ -249,7 +251,7 @@ namespace qguardbackend.Core.Services
                         }
                     }
                     await _context.SaveChangesAsync();
-                    await _auditLogService.AddToAudit((int)AuditActionType.Edit, "Settings", $"User [{createdBy}] update a setting - {name} at {DateTime.UtcNow}.");
+                    //await _auditLogService.AddToAudit((int)AuditActionType.Edit, "Settings", $"User [{createdBy}] update a setting - {name} at {DateTime.UtcNow}.");
                     return CustomResult<List<OtherSettingModel>>.Success(model);
                 }
                 else

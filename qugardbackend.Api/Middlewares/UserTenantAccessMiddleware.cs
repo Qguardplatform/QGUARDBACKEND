@@ -43,23 +43,23 @@ namespace examportal.Middlewares
                 using var scope = _serviceScopeFactory.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 var tokenService = scope.ServiceProvider.GetRequiredService<IUserManagementService>();
-                var institutionService = scope.ServiceProvider.GetRequiredService<IInstitutionService>();
+                //var institutionService = scope.ServiceProvider.GetRequiredService<IInstitutionService>();
 
                 var userClaims = await tokenService.GetUserClaim();
-                var inst = await institutionService.GetByCode(tenantCode.ToString());
+                //var inst = await institutionService.GetByCode(tenantCode.ToString());
 
-                if (inst?.Data == null)
-                {
-                    context.Response.StatusCode = StatusCodes.Status404NotFound;
-                    await context.Response.WriteAsync("Invalid tenant code");
-                    return;
-                }
+                //if (inst?.Data == null)
+                //{
+                //    context.Response.StatusCode = StatusCodes.Status404NotFound;
+                //    await context.Response.WriteAsync("Invalid tenant code");
+                //    return;
+                //}
 
                 var hasAccess = await dbContext.UserRoles
-                    .AnyAsync(x => x.UserId == userClaims.UserId && x.InstitutionId == inst.Data.Id);
+                    .AnyAsync(x => x.UserId == userClaims.UserId /*&& x.InstitutionId == inst.Data.Id*/);
 
                 var hasAccessAsSystemAdmin = await dbContext.SystemAdminOtherTenantsRole
-                  .AnyAsync(x => x.UserId == userClaims.UserId && x.InstitutionId == inst.Data.Id);
+                  .AnyAsync(x => x.UserId == userClaims.UserId /*&& x.InstitutionId == inst.Data.Id*/);
 
 
                 if (!hasAccess && !hasAccessAsSystemAdmin)

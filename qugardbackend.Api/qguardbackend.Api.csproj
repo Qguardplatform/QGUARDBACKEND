@@ -19,9 +19,29 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\v1\AnalyticsController.cs" />
+    <Compile Remove="Controllers\v1\AuditController.cs" />
+    <Compile Remove="Controllers\v1\CandidateController.cs" />
+    <Compile Remove="Controllers\v1\CourseController.cs" />
+    <Compile Remove="Controllers\v1\DashboardController.cs" />
+    <Compile Remove="Controllers\v1\DepartmentController.cs" />
+    <Compile Remove="Controllers\v1\EnforcementActionsController.cs" />
+    <Compile Remove="Controllers\v1\EnforcementModesController.cs" />
+    <Compile Remove="Controllers\v1\ExamQuestionController.cs" />
+    <Compile Remove="Controllers\v1\ExamScheduleController.cs" />
+    <Compile Remove="Controllers\v1\FacultyController.cs" />
+    <Compile Remove="Controllers\v1\GradesController.cs" />
+    <Compile Remove="Controllers\v1\InstitutionController.cs" />
     <Compile Remove="Controllers\v1\InstitutionTypesController.cs" />
+    <Compile Remove="Controllers\v1\LevelController.cs" />
+    <Compile Remove="Controllers\v1\ProctorController.cs" />
+    <Compile Remove="Controllers\v1\ProgramController.cs" />
+    <Compile Remove="Controllers\v1\QuestionBankController.cs" />
+    <Compile Remove="Controllers\v1\SemesterController.cs" />
+    <Compile Remove="Controllers\v1\SessionController.cs" />
+    <Compile Remove="Controllers\v1\TutorsController.cs" />
     <Compile Remove="ServiceExtensions\AddAuthenticationExtension.cs" />
     <Compile Remove="ServiceExtensions\AddSerilogMSSQLExtenstion.cs" />
+    <Compile Remove="ServiceExtensions\CustomHttpHandler.cs" />
     <Compile Remove="ServiceExtensions\RequestResponseLoggingMiddleware.cs" />
   </ItemGroup>
 

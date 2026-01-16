@@ -6,12 +6,51 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BackGroundService\EmailNotificationBackgroundService.cs" />
     <Compile Remove="Interfaces\IApplicationUserService.cs" />
+    <Compile Remove="Interfaces\IAuditLogService.cs" />
+    <Compile Remove="Interfaces\ICandidateService.cs" />
+    <Compile Remove="Interfaces\ICourseService.cs" />
+    <Compile Remove="Interfaces\IDashboardService.cs" />
+    <Compile Remove="Interfaces\IDepartmentService.cs" />
+    <Compile Remove="Interfaces\IEnforcementActionService.cs" />
+    <Compile Remove="Interfaces\IEnforcementModeService.cs" />
+    <Compile Remove="Interfaces\IExamScheduleService.cs" />
+    <Compile Remove="Interfaces\IExamService.cs" />
+    <Compile Remove="Interfaces\IFacultyService.cs" />
+    <Compile Remove="Interfaces\IInstitutionService.cs" />
     <Compile Remove="Interfaces\IInstitutionTypeService.cs" />
+    <Compile Remove="Interfaces\ILevelService.cs" />
+    <Compile Remove="Interfaces\IProctorMeTrackerService.cs" />
+    <Compile Remove="Interfaces\IProctorService.cs" />
+    <Compile Remove="Interfaces\IProgramService.cs" />
+    <Compile Remove="Interfaces\IQuestionBankService.cs" />
+    <Compile Remove="Interfaces\ISemesterService.cs" />
+    <Compile Remove="Interfaces\ISessionService.cs" />
     <Compile Remove="Interfaces\ITokenService.cs" />
+    <Compile Remove="Interfaces\ITutorsService.cs" />
     <Compile Remove="Services\ApplicationUserService.cs" />
+    <Compile Remove="Services\AuditLogService.cs" />
+    <Compile Remove="Services\CandidateService.cs" />
+    <Compile Remove="Services\CourseService.cs" />
+    <Compile Remove="Services\DashboardService.cs" />
+    <Compile Remove="Services\DepartmentService.cs" />
+    <Compile Remove="Services\EnforcementActionService.cs" />
+    <Compile Remove="Services\EnforcementModeService.cs" />
+    <Compile Remove="Services\ExamScheduleService.cs" />
+    <Compile Remove="Services\ExamService.cs" />
+    <Compile Remove="Services\FacultyService.cs" />
+    <Compile Remove="Services\InstitutionService.cs" />
     <Compile Remove="Services\InstitutionTypeService.cs" />
+    <Compile Remove="Services\LevelService.cs" />
+    <Compile Remove="Services\ProctorMeTrackerService.cs" />
+    <Compile Remove="Services\ProctorService.cs" />
+    <Compile Remove="Services\ProgramService.cs" />
+    <Compile Remove="Services\QuestionBankService.cs" />
+    <Compile Remove="Services\SemesterService.cs" />
+    <Compile Remove="Services\SessionService.cs" />
     <Compile Remove="Services\TokenService.cs" />
+    <Compile Remove="Services\TutorsService.cs" />
   </ItemGroup>
 
   <ItemGroup>

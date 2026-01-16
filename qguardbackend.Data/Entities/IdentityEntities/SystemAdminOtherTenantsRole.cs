@@ -10,8 +10,8 @@ public class SystemAdminOtherTenantsRole : BaseEntity
 {
     public long? InstitutionId { get; set; }
 
-    [ForeignKey(nameof(InstitutionId))]
-    public Institution Institution { get; set; }
+    //[ForeignKey(nameof(InstitutionId))]
+    //public Institution Institution { get; set; }
     public string UserId { get; set; }
     [ForeignKey(nameof(UserId))]
     public ApplicationUser ApplicationUser { get; set; }

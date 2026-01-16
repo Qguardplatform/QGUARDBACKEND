@@ -7,9 +7,38 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Entities\AuditLog.cs" />
+    <Compile Remove="Entities\Candidate.cs" />
+    <Compile Remove="Entities\CandidateExamResult.cs" />
+    <Compile Remove="Entities\CandidateExamsSubmission.cs" />
+    <Compile Remove="Entities\CandidateExamViewAndAttempts.cs" />
+    <Compile Remove="Entities\CandidateProctorLog.cs" />
+    <Compile Remove="Entities\CandidatesCurrentState.cs" />
+    <Compile Remove="Entities\Course.cs" />
+    <Compile Remove="Entities\CourseDepartments.cs" />
+    <Compile Remove="Entities\CourseLevel.cs" />
+    <Compile Remove="Entities\CourseTutors.cs" />
+    <Compile Remove="Entities\Department.cs" />
+    <Compile Remove="Entities\DepartmentExamSchedule.cs" />
+    <Compile Remove="Entities\EnforcementAction.cs" />
+    <Compile Remove="Entities\EnforcementMode.cs" />
+    <Compile Remove="Entities\ExamQuestion.cs" />
+    <Compile Remove="Entities\ExamSchedule.cs" />
+    <Compile Remove="Entities\Faculty.cs" />
+    <Compile Remove="Entities\FacultyProgram.cs" />
+    <Compile Remove="Entities\Institution.cs" />
     <Compile Remove="Entities\InstitutionType.cs" />
+    <Compile Remove="Entities\Level.cs" />
+    <Compile Remove="Entities\ProctorConfiguration.cs" />
+    <Compile Remove="Entities\ProctorMeTracker.cs" />
+    <Compile Remove="Entities\Program.cs" />
     <Compile Remove="Entities\Question.cs" />
+    <Compile Remove="Entities\QuestionBank.cs" />
+    <Compile Remove="Entities\QuestionOption.cs" />
+    <Compile Remove="Entities\Semester.cs" />
+    <Compile Remove="Entities\Session.cs" />
     <Compile Remove="Entities\State.cs" />
+    <Compile Remove="Entities\Tutor.cs" />
   </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Asp.Versioning.Mvc" Version="6.4.1" />

@@ -77,19 +77,19 @@ namespace qguardbackend.Core.Services
                 }
             }
 
-            var getIns = _context.Institutions.Where(x => x.Id == tempQuery.InstitutionId).FirstOrDefault();
+            //var getIns = _context.Institutions.Where(x => x.Id == tempQuery.InstitutionId).FirstOrDefault();
 
-            var Inst = _mapper.Map<InstitutionResponseDto>(getIns);
+            //var Inst = _mapper.Map<InstitutionResponseDto>(getIns);
 
             var userDetails = _mapper.Map<ApplicationUserResponse>(tempQuery);
 
             userDetails.RoleId = roles.FirstOrDefault()?.Id ?? Guid.Empty;
             userDetails.Roles = roles;
-            userDetails.Institution = Inst;
+            //userDetails.Institution = Inst;
             userDetails.Firstname = tempQuery.FirstName;
             userDetails.Lastname = tempQuery.LastName;
             userDetails.Gender = tempQuery.Gender;
-            userDetails.Institution = Inst;
+            //userDetails.Institution = Inst;
             userDetails.Address = $"{tempQuery.Street}, {tempQuery.City}, {tempQuery.State}, {tempQuery.ZipCode}, {tempQuery.Country}";
 
             return CustomResult<ApplicationUserResponse>.Success(userDetails);
@@ -133,7 +133,7 @@ namespace qguardbackend.Core.Services
         {
 
             var tempQuery = _userManager.Users
-                .Include(u => u.Institution)
+                //.Include(u => u.Institution)
                 .OrderByDescending(x => x.CreatedAt)
                 .AsQueryable();
 
@@ -153,12 +153,12 @@ namespace qguardbackend.Core.Services
                     .Where(x => x.CreatedAt <= query.EndDate.Value);
             }
 
-            var tenCode = await GetTenantCode();
-            if (!string.IsNullOrEmpty(tenCode.Data) && tenCode.Data.ToLower() != "master")
-            {
-                tempQuery = tempQuery.Where(x => x.Institution.Code.ToLower() ==
-                tenCode.Data.ToLower());
-            }
+            //var tenCode = await GetTenantCode();
+            //if (!string.IsNullOrEmpty(tenCode.Data) && tenCode.Data.ToLower() != "master")
+            //{
+            //    tempQuery = tempQuery.Where(x => x.Institution.Code.ToLower() ==
+            //    tenCode.Data.ToLower());
+            //}
 
             if (query != null && !string.IsNullOrEmpty(query.SearchWord))
             {
@@ -210,9 +210,9 @@ namespace qguardbackend.Core.Services
                     }
                 }
 
-                var getIns = _context.Institutions.Where(x => x.Id == user.InstitutionId).FirstOrDefault();
+                //var getIns = _context.Institutions.Where(x => x.Id == user.InstitutionId).FirstOrDefault();
 
-                var Inst = _mapper.Map<InstitutionResponseDto>(getIns);
+                //var Inst = _mapper.Map<InstitutionResponseDto>(getIns);
                 result.Add(new ApplicationUserResponse
                 {
                     Id = user.Id,
@@ -236,7 +236,7 @@ namespace qguardbackend.Core.Services
                     ApprovalActionBy = user.ApprovalActionBy,
                     ApprovalActionDate = user.ApprovalActionDate,
                     Roles = roles,
-                    Institution = Inst,
+                    //Institution = Inst,
                     RoleId = roles.FirstOrDefault()?.Id ?? Guid.Empty
                 });
             }
@@ -404,8 +404,8 @@ namespace qguardbackend.Core.Services
             var role = await _context.Roles.FirstOrDefaultAsync(c => c.Name.ToLower() == RolenamesConstant.SYSTEMADMIN.ToLower());
             if (role == null) return;
 
-            var institution = await _context.Institutions.FirstOrDefaultAsync(c => c.Code.ToLower() == "master");
-            if (institution == null) return;
+            //var institution = await _context.Institutions.FirstOrDefaultAsync(c => c.Code.ToLower() == "master");
+            //if (institution == null) return;
 
             var hasher = new PasswordHasher<ApplicationUser>();
             Guid ID = Guid.NewGuid();
@@ -427,7 +427,7 @@ namespace qguardbackend.Core.Services
                 IsActive = true,
                 TwoFactorEnabled = false,
                 AccountActivationDate = DateTime.UtcNow,
-                InstitutionId = institution.Id
+                //InstitutionId = institution.Id
             };
             user.PasswordHash = hasher.HashPassword(user, "Password@123");
             await _context.AddAsync(user);
@@ -437,7 +437,7 @@ namespace qguardbackend.Core.Services
                 RoleId = role.Id,
                 UserId = ID.ToString(),
                 CreatedAt = DateTime.UtcNow,
-                InstitutionId = institution.Id
+                //InstitutionId = institution.Id
             };
             await _context.AddAsync(userRole);
             await _context.SaveChangesAsync();
@@ -448,7 +448,7 @@ namespace qguardbackend.Core.Services
 
             var GeneralAccess = new SystemAdminOtherTenantsRole
             {
-                InstitutionId = institution.Id,
+                //InstitutionId = institution.Id,
                 IsActive = true,
                 IsDeleted = false,
                 RoleId = role.Id,
@@ -571,13 +571,14 @@ namespace qguardbackend.Core.Services
             // Retrieve JWT token from Authorization header
             string tenCode = _httpContextAccessor.HttpContext.Request.Headers["TenantCode"].FirstOrDefault();
 
-            var getInstitutionId = await _context.Institutions.FirstOrDefaultAsync(x => x.Code.ToLower() == tenCode.ToLower());
+            //var getInstitutionId = await _context.Institutions.FirstOrDefaultAsync(x => x.Code.ToLower() == tenCode.ToLower());
 
-            if (getInstitutionId == null)
-            {
-                return CustomResult<long>.Failure(CustomError.TenantNotFound, ResponseCodes.NotFoundErrorCode);
-            }
-            return CustomResult<long>.Success(getInstitutionId.Id);
+            //if (getInstitutionId == null)
+            //{
+            //    return CustomResult<long>.Failure(CustomError.TenantNotFound, ResponseCodes.NotFoundErrorCode);
+            //}
+            //return CustomResult<long>.Success(getInstitutionId.Id);
+            return CustomResult<long>.Success(1);
         }
 
         public async Task<CustomResult<string>> GetTenantCode()
@@ -684,14 +685,14 @@ namespace qguardbackend.Core.Services
                             from ur in urj.DefaultIfEmpty()
                             join r in _context.Roles on ur.RoleId equals r.Id into rj
                             from r in rj.DefaultIfEmpty()
-                            join i in _context.Institutions on u.InstitutionId equals i.Id into ij
-                            from i in ij.DefaultIfEmpty()
+                            //join i in _context.Institutions on u.InstitutionId equals i.Id into ij
+                            //from i in ij.DefaultIfEmpty()
                             where !u.IsDeleted
                             select new
                             {
                                 User = u,
                                 RoleName = r != null ? r.Name : null,
-                                InstitutionName = i != null ? i.Name : "n/a"
+                                //InstitutionName = i != null ? i.Name : "n/a"
                             };
                 // Exclude CANDIDATE users completely
                 records = records.Where(x =>
@@ -703,10 +704,10 @@ namespace qguardbackend.Core.Services
                                 .Any(r => r.UserId == x.User.Id && r.Name == "CANDIDATE")
                         );
 
-                if (search.InstitutionId > 0)
-                {
-                    records = records.Where(x => x.User.InstitutionId == search.InstitutionId);
-                }
+                //if (search.InstitutionId > 0)
+                //{
+                //    records = records.Where(x => x.User.InstitutionId == search.InstitutionId);
+                //}
                 if (!string.IsNullOrEmpty(search.RoleName))
                 {
                     records = records.Where(x => x.RoleName == search.RoleName);
@@ -726,7 +727,7 @@ namespace qguardbackend.Core.Services
                             Email = g.First().User.Email,
                             UserName = g.First().User.UserName,
                             FullName = g.First().User.LastName + " " + g.First().User.FirstName,
-                            Institution = g.First().InstitutionName,
+                            //Institution = g.First().InstitutionName,
                             Role = g.Any(x => x.RoleName != null)
                                 ? string.Join(",", g.Where(x => x.RoleName != null).Select(x => x.RoleName))
                                 : "n/a",

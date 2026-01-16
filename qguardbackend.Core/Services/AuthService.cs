@@ -11,7 +11,7 @@ using qguardbackend.Data.DTOs.Results;
 using qguardbackend.Data.Entities;
 using qguardbackend.Data.Enums;
 using qguardbackend.Data.Enums.Constants;
-using qguardbackend.Data.Migrations;
+//using qguardbackend.Data.Migrations;
 using examportal.Api.ServiceExtensions;
 using examportal.Data.Entities;
 using examportal.Data.Model;
@@ -40,7 +40,7 @@ namespace qguardbackend.Core.Services
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IUserManagementService _userMgmtService;
-        private readonly IAuditLogService _auditLogSvc;
+        //private readonly IAuditLogService _auditLogSvc;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly AppDbContext _context;
         private readonly IEmailService _emailService;
@@ -52,7 +52,8 @@ namespace qguardbackend.Core.Services
             SignInManager<ApplicationUser> signInManager,
             IUserManagementService userMgmtService,
                  IS3Service s3Service,
-            IAuditLogService auditLogSvc, AppDbContext context,
+            //IAuditLogService auditLogSvc,
+            AppDbContext context,
             IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
@@ -60,7 +61,7 @@ namespace qguardbackend.Core.Services
             _logger = logger;
             _signInManager = signInManager;
             _userMgmtService = userMgmtService;
-            _auditLogSvc = auditLogSvc;
+            //_auditLogSvc = auditLogSvc;
             _httpContextAccessor = httpContextAccessor;
             _context = context;
             _emailService = emailService;
@@ -112,7 +113,8 @@ namespace qguardbackend.Core.Services
 
                 //check if the user is profiled to have access to the institution
                 var hasAccess = await _context.UserRoles
-                 .FirstOrDefaultAsync(x => x.UserId == user.Id && x.InstitutionId == InsTId.Data);
+                 .FirstOrDefaultAsync(x => x.UserId == user.Id //&& x.InstitutionId == InsTId.Data
+                 );
 
                 var hasAccessAsSystemAdmin = await _context.SystemAdminOtherTenantsRole
                   .AnyAsync(x => x.UserId == user.Id && x.InstitutionId == InsTId.Data);
@@ -131,9 +133,10 @@ namespace qguardbackend.Core.Services
                 var userRoles = new List<string>();
                 var roles = await _userManager.GetRolesAsync(user);
                 userRoles.AddRange(roles);
-                var insTdetails = await _context.Institutions.FirstOrDefaultAsync(x => x.Id == InsTId.Data);
+                //var insTdetails = await _context.Institutions.FirstOrDefaultAsync(x => x.Id == InsTId.Data);
                 //if the request user is a system admin and the request tenant is not Master
-                if (roles.Contains(RolesEnum.SYSTEMADMIN.GetEnumText()) && insTdetails.Code.ToLower() != "master")
+                if (roles.Contains(RolesEnum.SYSTEMADMIN.GetEnumText())/* && insTdetails.Code.ToLower() != "master"*/
+                    )
                 {
                     var getUserRoles = await _context.SystemAdminOtherTenantsRole
                    .Include(x => x.ApplicationRole)
@@ -188,7 +191,7 @@ namespace qguardbackend.Core.Services
                         Role = userRoles.ToList(),
                     }
                 };
-                await AddToAudit(user, user.InstitutionId);
+                //await AddToAudit(user, user.InstitutionId);
                 return CustomResult<ReturnTokenModel>.Success(returnDto);
             }
             catch (Exception ex)
@@ -244,7 +247,7 @@ namespace qguardbackend.Core.Services
                 var InsTId = await _userMgmtService.GetTenantId();
                 if (!InsTId.IsSuccess) return CustomResult<ReturnTokenModel>.Failure(CustomError.InvalidTenant, ResponseCodes.InvalidTenant);
 
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == model.Email.ToLower() && x.InstitutionId == InsTId.Data);
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == model.Email.ToLower() /*&& x.InstitutionId == InsTId.Data*/);
                 if (user == null) return CustomResult<ReturnTokenModel>.ErrorOccured("Please Check the Login Credentials - Invalid Email/Password was entered!", ResponseCodes.BadRequestErrorCode);
 
                 if (!user.IsActive)
@@ -264,7 +267,7 @@ namespace qguardbackend.Core.Services
 
                 await _userMgmtService.TokenCreateModel(Guid.Parse(user.Id), newRefreshToken);
                 var newAccessToken = await CreateAccessToken(user, fullname, roles.ToArray());
-                await AddToAudit(user, user.InstitutionId);
+                //await AddToAudit(user, user.InstitutionId);
                 var returnDto = new ReturnTokenModel
                 {
                     AccessToken = newAccessToken.token,
@@ -343,16 +346,16 @@ namespace qguardbackend.Core.Services
                 _logger.LogError(ex, "Failed to retrieve IP address.");
                 IpAddress = _httpContextAccessor.HttpContext.Connection?.RemoteIpAddress?.ToString() ?? "Unknown";
             }
-            await _auditLogSvc.LogToAudit(new AuditLogWriteModel
-            {
-                CreatedAt = DateTime.UtcNow,
-                EventType = Convert.ToInt32(AuditActionType.Create),
-                IPAddress = IpAddress,
-                UserId = user.Email,
-                InstitutionId = institutionId,
-                Action = "Login",
-                Description = $"User [{user.Email}] logged in at {DateTime.UtcNow} from IP {IpAddress}"
-            });
+            //await _auditLogSvc.LogToAudit(new AuditLogWriteModel
+            //{
+            //    CreatedAt = DateTime.UtcNow,
+            //    EventType = Convert.ToInt32(AuditActionType.Create),
+            //    IPAddress = IpAddress,
+            //    UserId = user.Email,
+            //    InstitutionId = institutionId,
+            //    Action = "Login",
+            //    Description = $"User [{user.Email}] logged in at {DateTime.UtcNow} from IP {IpAddress}"
+            //});
             await _userMgmtService.UpdateUserLastLoginDate(user.Id);
         }
 
@@ -382,7 +385,7 @@ namespace qguardbackend.Core.Services
                 var InsTId = await _userMgmtService.GetTenantId();
                 if (!InsTId.IsSuccess) return CustomResult<bool>.Failure(CustomError.InvalidTenant, ResponseCodes.InvalidTenant);
 
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower() && x.InstitutionId == InsTId.Data);
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower() /*&& x.InstitutionId == InsTId.Data*/);
                 if (user == null) return CustomResult<bool>.ErrorOccured($"User with email: {email} not found", ResponseCodes.BadRequestErrorCode);
 
                 if (!await _userManager.CheckPasswordAsync(user, currentPassword))
@@ -440,7 +443,7 @@ namespace qguardbackend.Core.Services
                 var InsTId = await _userMgmtService.GetTenantId();
                 if (!InsTId.IsSuccess) return CustomResult<string>.Failure(CustomError.InvalidTenant, ResponseCodes.InvalidTenant);
 
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower() && x.InstitutionId == InsTId.Data);
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower()/* && x.InstitutionId == InsTId.Data*/);
                 if (user == null) return CustomResult<string>.ErrorOccured($"User with email: {email} not found", ResponseCodes.BadRequestErrorCode);
 
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -455,7 +458,7 @@ namespace qguardbackend.Core.Services
                 _context.SaveChanges();
 
                 var getUserRole = await _context.UserRoles.FirstOrDefaultAsync(i => i.UserId == user.Id);
-                var getInst = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == getUserRole.InstitutionId);
+                //var getInst = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == getUserRole.InstitutionId);
 
 
                 //var NewPassword = user.LastName.ToLower().Trim().Count() > 11
@@ -472,7 +475,7 @@ namespace qguardbackend.Core.Services
 
                     await _emailService.SendNewDefaultPasswordEmailAsync(new SendWelcomeEmailVM
                     {
-                        InstitutionBaseUrl = $"{getInst.HostName}/auth/login",
+                        //InstitutionBaseUrl = $"{getInst.HostName}/auth/login",
                         Fullname = $"{user.LastName} {user.FirstName}",
                         Password = NewPassword,
                         receiverEmail = email,
@@ -501,7 +504,7 @@ namespace qguardbackend.Core.Services
                 var InsTId = await _userMgmtService.GetTenantId();
                 if (!InsTId.IsSuccess) return CustomResult<string>.Failure(CustomError.InvalidTenant, ResponseCodes.InvalidTenant);
 
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower() && x.InstitutionId == InsTId.Data);
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower() /*&& x.InstitutionId == InsTId.Data*/);
                 if (user == null) return CustomResult<string>.ErrorOccured($"User with email: {email} not found", ResponseCodes.BadRequestErrorCode);
 
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -514,12 +517,12 @@ namespace qguardbackend.Core.Services
                 _context.SaveChanges();
 
                 var getUserRole = await _context.UserRoles.FirstOrDefaultAsync(i => i.UserId == user.Id);
-                var getInst = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == getUserRole.InstitutionId);
+                //var getInst = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == getUserRole.InstitutionId);
 
                 var res = await _emailService.SendPasswordResetEmailAsync(new SendPasswordResetEmailVM
                 {
                     PasswordResetToken = token,
-                    InstitutionBaseUrl = getInst.HostName,
+                    //InstitutionBaseUrl = getInst.HostName,
                     Fullname = $"{user.LastName} {user.FirstName}",
                     receiverEmail = email,
                      ExpiresOn = activationTokenexpiresOn
@@ -543,7 +546,7 @@ namespace qguardbackend.Core.Services
                 var InsTId = await _userMgmtService.GetTenantId();
                 if (!InsTId.IsSuccess) return CustomResult<string>.Failure(CustomError.InvalidTenant, ResponseCodes.InvalidTenant);
 
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower() && x.InstitutionId == InsTId.Data);
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower() /*&& x.InstitutionId == InsTId.Data*/);
                 if (user == null) return CustomResult<string>.ErrorOccured($"User with email: {email} not found", ResponseCodes.BadRequestErrorCode);
 
                 //check if the activation token is expired
@@ -623,7 +626,7 @@ namespace qguardbackend.Core.Services
                 var InsTId = await _userMgmtService.GetTenantId();
                 if (!InsTId.IsSuccess) return CustomResult<RegisterUserResponseDto>.Failure(CustomError.InvalidTenant, ResponseCodes.InvalidTenant);
 
-                if (await _context.Users.AnyAsync(x => x.Email.ToUpper() == model.Email.ToUpper() && x.InstitutionId == InsTId.Data))
+                if (await _context.Users.AnyAsync(x => x.Email.ToUpper() == model.Email.ToUpper() /*&& x.InstitutionId == InsTId.Data*/))
                     return CustomResult<RegisterUserResponseDto>.Failure(CustomError.AccountAlreadyExistsError, ResponseCodes.UnableToProfileUser);
 
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName };
@@ -638,7 +641,7 @@ namespace qguardbackend.Core.Services
 
                 //user.EmailConfirmed = true;
                 user.RequiresPasswordChange = true;
-                user.InstitutionId = institutionId;
+                //user.InstitutionId = institutionId;
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 var getRole = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id == model.RoleId);
@@ -738,16 +741,16 @@ namespace qguardbackend.Core.Services
             {
                 using var transaction = await _context.Database.BeginTransactionAsync();
 
-                if (!await _context.Institutions.AnyAsync(x => x.Id == InsTId.Data))
-                    return CustomResult<RegisterUserResponseDto>.ErrorOccured("Institution does not exists", ResponseCodes.NotFoundErrorCode);
+                //if (!await _context.Institutions.AnyAsync(x => x.Id == InsTId.Data))
+                //    return CustomResult<RegisterUserResponseDto>.ErrorOccured("Institution does not exists", ResponseCodes.NotFoundErrorCode);
                 try
                 {
-                    var Inst = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == InsTId.Data);
+                    //var Inst = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == InsTId.Data);
 
-                    if (Inst == null)
-                    {
-                        return CustomResult<RegisterUserResponseDto>.ErrorOccured("Institution not found!", ResponseCodes.NotFoundErrorCode);
-                    }
+                    //if (Inst == null)
+                    //{
+                    //    return CustomResult<RegisterUserResponseDto>.ErrorOccured("Institution not found!", ResponseCodes.NotFoundErrorCode);
+                    //}
                     var NewPassword = "Password@123";
 
                     var registerUser = await RegisterAsync(new RegisterUserRequestDto
@@ -773,7 +776,7 @@ namespace qguardbackend.Core.Services
                         CreatedAt = DateTime.UtcNow,
                         UserId = registerUser.Data.UserId,
                         RoleId = model.RoleId,
-                        InstitutionId = InsTId.Data
+                        //InstitutionId = InsTId.Data
                     });
 
                     //if the new profile is a system admin role, 
@@ -791,32 +794,32 @@ namespace qguardbackend.Core.Services
 
 
                         var getInsAdminRole = await _context.Roles.FirstOrDefaultAsync(x => x.Name.ToLower() == RolenamesConstant.INSTITUTIONADMIN.ToLower());
-                        var getAllInst = await _context.Institutions.Select(x => x.Id).ToListAsync();
+                        //var getAllInst = await _context.Institutions.Select(x => x.Id).ToListAsync();
 
-                        foreach (var inst in getAllInst)
-                        {
-                            await _context.SystemAdminOtherTenantsRole.AddAsync(new SystemAdminOtherTenantsRole
-                            {
-                                CreatedAt = DateTime.UtcNow,
-                                InstitutionId = inst,
-                                RoleId = getInsAdminRole.Id,
-                                UserId = registerUser.Data.UserId,
-                            });
-                        }
+                        //foreach (var inst in getAllInst)
+                        //{
+                        //    await _context.SystemAdminOtherTenantsRole.AddAsync(new SystemAdminOtherTenantsRole
+                        //    {
+                        //        CreatedAt = DateTime.UtcNow,
+                        //        InstitutionId = inst,
+                        //        RoleId = getInsAdminRole.Id,
+                        //        UserId = registerUser.Data.UserId,
+                        //    });
+                        //}
                     }
 
-                    if (getRole.Name.ToUpper() == RolenamesConstant.TUTOR)
-                    {
-                        await _context.Tutors.AddAsync(new Tutor
-                        {
-                            CreatedAt = DateTime.UtcNow,
-                            InstitutionId = InsTId.Data,
-                            TutorName = $"{model.LastName} {model.FirstName}",
-                            ApplicationUserId = registerUser.Data.UserId,
-                            IsActive = model.IsActive,
-                            IsDeleted = false
-                        });
-                    }
+                    //if (getRole.Name.ToUpper() == RolenamesConstant.TUTOR)
+                    //{
+                    //    await _context.Tutors.AddAsync(new Tutor
+                    //    {
+                    //        CreatedAt = DateTime.UtcNow,
+                    //        InstitutionId = InsTId.Data,
+                    //        TutorName = $"{model.LastName} {model.FirstName}",
+                    //        ApplicationUserId = registerUser.Data.UserId,
+                    //        IsActive = model.IsActive,
+                    //        IsDeleted = false
+                    //    });
+                    //}
 
                     await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
@@ -826,7 +829,7 @@ namespace qguardbackend.Core.Services
                     {
                         await _emailService.SendWelcomeEmailAsync(new SendWelcomeEmailVM
                         {
-                            InstitutionBaseUrl = $"{Inst.HostName}/auth/login",
+                            //InstitutionBaseUrl = $"{Inst.HostName}/auth/login",
                             Fullname = $"{model.LastName} {model.FirstName}",
                             Password = NewPassword,
                             receiverEmail = model.Email,
@@ -881,7 +884,7 @@ namespace qguardbackend.Core.Services
         {
             if (string.IsNullOrEmpty(model.LastName) || string.IsNullOrEmpty(model.FirstName))
             {
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == model.Email.ToLower() && u.InstitutionId == tenantId);
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == model.Email.ToLower()/* && u.InstitutionId == tenantId*/);
                 if (user != null)
                 {
                     var (first, last) = Helper.SplitFullName(model.FullName);

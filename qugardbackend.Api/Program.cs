@@ -1,5 +1,5 @@
 using examportal.Api.ServiceExtensions;
-using examportal.ServiceExtensions;
+//using examportal.ServiceExtensions;
 using Serilog;
 using System.Text.Json.Serialization;
 
@@ -13,9 +13,10 @@ try
         .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
 
     builder.Services.ConfigureServices(builder.Configuration);
-
-    builder.Services.AddTransient<CustomHttpHandler>();
-    builder.Services.AddHttpClient("clientRequest").AddHttpMessageHandler<CustomHttpHandler>();
+    // ? Register HttpClientFactory
+    builder.Services.AddHttpClient();
+    //builder.Services.AddTransient<CustomHttpHandler>();
+    //builder.Services.AddHttpClient("clientRequest").AddHttpMessageHandler<CustomHttpHandler>();
 
     var app = builder.Build();
 

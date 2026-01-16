@@ -33,16 +33,16 @@ namespace examportal.Middlewares
             }
 
             using var scope = _serviceScopeFactory.CreateScope();
-            var institutionService = scope.ServiceProvider.GetRequiredService<IInstitutionService>();
+            //var institutionService = scope.ServiceProvider.GetRequiredService<IInstitutionService>();
 
-            var hasPermission = await institutionService.CheckinstitutionByCode(tenantCode);
+            //var hasPermission = await institutionService.CheckinstitutionByCode(tenantCode);
 
-            if (!hasPermission)
-            {
-                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                await context.Response.WriteAsync("Invalid tenant code passed!");
-                return;
-            }
+            //if (!hasPermission)
+            //{
+            //    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            //    await context.Response.WriteAsync("Invalid tenant code passed!");
+            //    return;
+            //}
 
             await _next(context);
         }

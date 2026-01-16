@@ -188,9 +188,9 @@ namespace qguardbackend.Core.Services
                 var userRoles = new List<string>();
                 var roles = await _userManager.GetRolesAsync(getuser);
                 userRoles.AddRange(roles);
-                var insTdetails = await _context.Institutions.FirstOrDefaultAsync(x => x.Id == InsTId.Data);
+                //var insTdetails = await _context.Institutions.FirstOrDefaultAsync(x => x.Id == InsTId.Data);
                 //if the request user is a system admin and the request tenant is not Master
-                if (roles.Contains(RolesEnum.SYSTEMADMIN.GetEnumText()) && insTdetails.Code.ToLower() != "master")
+                if (roles.Contains(RolesEnum.SYSTEMADMIN.GetEnumText()) /*&& insTdetails.Code.ToLower() != "master"*/)
                 {
                     var getUserRoles = await _context.SystemAdminOtherTenantsRole
                    .Include(x => x.ApplicationRole)

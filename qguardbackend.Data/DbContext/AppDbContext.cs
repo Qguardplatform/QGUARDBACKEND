@@ -18,7 +18,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
     }
 
     #region DbSetRegion
-    public DbSet<AuditLog> AuditLogs { get; set; }
+    //public DbSet<AuditLog> AuditLogs { get; set; }
     public DbSet<RefreshToken> RefreshToken { get; set; }
     public DbSet<Setting> Settings { get; set; }
     public DbSet<Priviledge> Priviledges { get; set; }
@@ -26,36 +26,36 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
     public DbSet<Country> Countries { get; set; }
     public DbSet<Region> Regions { get; set; }
     public DbSet<City> Cities { get; set; }
-    public DbSet<Candidate> Candidates { get; set; }
-    public DbSet<CandidateExamsSubmission> CandidateExamsSubmissions { get; set; }
-    public DbSet<Institution> Institutions { get; set; }
-    public DbSet<Department> Departments { get; set; }
-    public DbSet<CandidatesCurrentState> CandidatesCurrentStates { get; set; }
-    public DbSet<Level> Levels { get; set; }
-    public DbSet<Course> Courses { get; set; }
-    public DbSet<CourseDepartments> CourseDepartments { get; set; }
-    public DbSet<DepartmentExamSchedule> DepartmentExamSchedules { get; set; }
-    public DbSet<CourseLevel> CourseLevels { get; set; }
-    public DbSet<CourseTutors> CourseTutors { get; set; }
-    public DbSet<FacultyProgram> FacultyPrograms { get; set; }
-    public DbSet<Program> Programs { get; set; }
+    //public DbSet<Candidate> Candidates { get; set; }
+    //public DbSet<CandidateExamsSubmission> CandidateExamsSubmissions { get; set; }
+    //public DbSet<Institution> Institutions { get; set; }
+    //public DbSet<Department> Departments { get; set; }
+    //public DbSet<CandidatesCurrentState> CandidatesCurrentStates { get; set; }
+    //public DbSet<Level> Levels { get; set; }
+    //public DbSet<Course> Courses { get; set; }
+    //public DbSet<CourseDepartments> CourseDepartments { get; set; }
+    //public DbSet<DepartmentExamSchedule> DepartmentExamSchedules { get; set; }
+    //public DbSet<CourseLevel> CourseLevels { get; set; }
+    //public DbSet<CourseTutors> CourseTutors { get; set; }
+    //public DbSet<FacultyProgram> FacultyPrograms { get; set; }
+    //public DbSet<Program> Programs { get; set; }
     public DbSet<EmailLog> EmailLogs { get; set; }
-    public DbSet<Faculty> Faculties { get; set; }
-    public DbSet<Session> Sessions { get; set; }
-    public DbSet<Semester> Semesters { get; set; }
-    public DbSet<QuestionBank> QuestionBanks { get; set; }
-    public DbSet<QuestionOption> QuestionOptions { get; set; }
-    public DbSet<ExamSchedule> ExamSchedules { get; set; }
-    public DbSet<ExamQuestion> ExamQuestions { get; set; }
-    public DbSet<CandidateExamResult> CandidateExamResults { get; set; }
-    public DbSet<CandidateProctorLog> CandidateProctorLogs { get; set; }
+    //public DbSet<Faculty> Faculties { get; set; }
+    //public DbSet<Session> Sessions { get; set; }
+    //public DbSet<Semester> Semesters { get; set; }
+    //public DbSet<QuestionBank> QuestionBanks { get; set; }
+    //public DbSet<QuestionOption> QuestionOptions { get; set; }
+    //public DbSet<ExamSchedule> ExamSchedules { get; set; }
+    //public DbSet<ExamQuestion> ExamQuestions { get; set; }
+    //public DbSet<CandidateExamResult> CandidateExamResults { get; set; }
+    //public DbSet<CandidateProctorLog> CandidateProctorLogs { get; set; }
     public DbSet<SystemAdminOtherTenantsRole> SystemAdminOtherTenantsRole { get; set; }
-    public DbSet<Tutor> Tutors { get; set; }
-    public DbSet<EnforcementMode> EnforcementModes { get; set; }
-    public DbSet<EnforcementAction> EnforcementActions { get; set; }
-    public DbSet<ProctorConfiguration> ProctorConfigurations { get; set; }
-    public DbSet<ProctorMeTracker> ProctorMeTrackers { get; set; }
-    public DbSet<CandidateExamViewAndAttempts> CandidateExamViewAndAttempts { get; set; }
+    //public DbSet<Tutor> Tutors { get; set; }
+    //public DbSet<EnforcementMode> EnforcementModes { get; set; }
+    //public DbSet<EnforcementAction> EnforcementActions { get; set; }
+    //public DbSet<ProctorConfiguration> ProctorConfigurations { get; set; }
+    //public DbSet<ProctorMeTracker> ProctorMeTrackers { get; set; }
+    //public DbSet<CandidateExamViewAndAttempts> CandidateExamViewAndAttempts { get; set; }
 
     #endregion
 
@@ -77,37 +77,37 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
         }
 
         // Configure CandidateProctorActivity
-        modelBuilder.Entity<CandidateProctorLog>(entity =>
-        {
+        //modelBuilder.Entity<CandidateProctorLog>(entity =>
+        //{
 
-            entity.HasIndex(e => e.FlagId).IsUnique();
-            entity.HasIndex(e => e.CandidateId);
-            entity.HasIndex(e => e.ExamScheduleId);
-            entity.HasIndex(e => new { e.CandidateId, e.ExamScheduleId });
-        });
+        //    entity.HasIndex(e => e.FlagId).IsUnique();
+        //    entity.HasIndex(e => e.CandidateId);
+        //    entity.HasIndex(e => e.ExamScheduleId);
+        //    entity.HasIndex(e => new { e.CandidateId, e.ExamScheduleId });
+        //});
 
         modelBuilder.Entity<ApplicationUserRole>()
             .HasOne(ur => ur.Role)
             .WithMany()
             .HasForeignKey(ur => ur.RoleId);
 
-        modelBuilder.Entity<CandidateExamsSubmission>()
-            .HasOne(x => x.ExamSchedule)
-            .WithMany()
-            .HasForeignKey(x => x.ExamScheduleId)
-            .OnDelete(DeleteBehavior.Restrict); // or NoAction
+        //modelBuilder.Entity<CandidateExamsSubmission>()
+        //    .HasOne(x => x.ExamSchedule)
+        //    .WithMany()
+        //    .HasForeignKey(x => x.ExamScheduleId)
+        //    .OnDelete(DeleteBehavior.Restrict); // or NoAction
 
-        modelBuilder.Entity<CandidateExamsSubmission>()
-            .HasOne(x => x.Candidate)
-            .WithMany()
-            .HasForeignKey(x => x.CandidateId)
-            .OnDelete(DeleteBehavior.Restrict);
+        //modelBuilder.Entity<CandidateExamsSubmission>()
+        //    .HasOne(x => x.Candidate)
+        //    .WithMany()
+        //    .HasForeignKey(x => x.CandidateId)
+        //    .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<CandidateExamsSubmission>()
-            .HasOne(x => x.QuestionBank)
-            .WithMany()
-            .HasForeignKey(x => x.QuestionBankId)
-            .OnDelete(DeleteBehavior.Restrict);
+        //modelBuilder.Entity<CandidateExamsSubmission>()
+        //    .HasOne(x => x.QuestionBank)
+        //    .WithMany()
+        //    .HasForeignKey(x => x.QuestionBankId)
+        //    .OnDelete(DeleteBehavior.Restrict);
     }
     #endregion
 }

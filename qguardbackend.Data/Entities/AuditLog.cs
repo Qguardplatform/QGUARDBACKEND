@@ -26,6 +26,6 @@ namespace qguardbackend.Data.Entities
         public string Description { get; set; }
         public string IPAddress { get; set; }
         public long? InstitutionId { get; set; }
-        public Institution Institution { get; set; }
+        //public Institution Institution { get; set; }
     }
 }

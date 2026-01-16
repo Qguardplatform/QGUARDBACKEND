@@ -8,8 +8,9 @@ namespace qguardbackend.Core.ApplicationOptions
     {
         public static async Task Initialize(AppDbContext applicationDbContext,
             ISettingsService sSvc, IStaticDatas stSvc, IRoleService rSvc,
-            IUserManagementService uSvc, IInstitutionService iISvc, ISemesterService sesSvc, 
-            ISessionService seSvc, IEnforcementActionService aSvc, IEnforcementModeService mSvc)
+            IUserManagementService uSvc///, IInstitutionService iISvc, ISemesterService sesSvc, 
+            //ISessionService seSvc, IEnforcementActionService aSvc, IEnforcementModeService mSvc
+            )
         {
             // Check, if db ApplicationDbContext is created
             //await applicationDbContext.Database.EnsureCreatedAsync();
@@ -21,17 +22,17 @@ namespace qguardbackend.Core.ApplicationOptions
             //seed role
             await rSvc.SeedRoles();
             //seed institution
-            await iISvc.SeedDefaultInstitution();
-            //seed semester
-            await sesSvc.SeedDefaultSemester();
-            //seed session
-            await seSvc.SeedDefaultSession();
+            //await iISvc.SeedDefaultInstitution();
+            ////seed semester
+            //await sesSvc.SeedDefaultSemester();
+            ////seed session
+            //await seSvc.SeedDefaultSession();
             //seed default system user
             await uSvc.SeedDefaultUser();
             //seed default enforcement action
-            await aSvc.SeedDefaultEnforcementAction();
-            //seed default enforcement mode
-            await mSvc.SeedDefaultEnforcementMode();
+            //await aSvc.SeedDefaultEnforcementAction();
+            ////seed default enforcement mode
+            //await mSvc.SeedDefaultEnforcementMode();
         }
     }
 }

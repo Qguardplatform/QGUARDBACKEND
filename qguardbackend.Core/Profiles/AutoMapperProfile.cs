@@ -13,8 +13,8 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<ApplicationUser, ApplicationUserResponse>().ReverseMap();
         CreateMap<ApplicationUser, ApplicationUserSignUpResponse>().ReverseMap();
-        CreateMap<Institution, InstitutionResponseDto>().ReverseMap();
-        CreateMap<Program, ProgramModel>().ReverseMap();
+        //CreateMap<Institution, InstitutionResponseDto>().ReverseMap();
+        //CreateMap<Program, ProgramModel>().ReverseMap();
 
 
     }

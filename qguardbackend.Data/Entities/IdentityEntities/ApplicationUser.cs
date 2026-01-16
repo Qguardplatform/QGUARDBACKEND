@@ -40,8 +40,8 @@ public  class ApplicationUser : IdentityUser
     public DateTime? ApprovalActionDate { get; set; }
   
 
-    public long InstitutionId { get; set; }
-    public Institution Institution { get; set; }
+    //public long InstitutionId { get; set; }
+    //public Institution Institution { get; set; }
 
     public ICollection<ApplicationUserRole> UserRoles { get; set; } = new HashSet<ApplicationUserRole>();
 }
