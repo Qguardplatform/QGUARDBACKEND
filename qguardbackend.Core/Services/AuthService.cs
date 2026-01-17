@@ -185,9 +185,9 @@ namespace qguardbackend.Core.Services
                         Email = user.Email,
                         Fullname = user.FullName,
                         EmailConfirmed = user.EmailConfirmed,
-                        IsActive = user.IsActive,
+                        IsActive = user.IsActive.Value,
                         RequiresPasswordChange = user.RequiresPasswordChange,
-                        otp = user.OTP,
+                        //otp = user.OTP,
                         Role = userRoles.ToList(),
                     }
                 };
@@ -250,7 +250,7 @@ namespace qguardbackend.Core.Services
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == model.Email.ToLower() /*&& x.InstitutionId == InsTId.Data*/);
                 if (user == null) return CustomResult<ReturnTokenModel>.ErrorOccured("Please Check the Login Credentials - Invalid Email/Password was entered!", ResponseCodes.BadRequestErrorCode);
 
-                if (!user.IsActive)
+                if (!user.IsActive.Value)
                     return CustomResult<ReturnTokenModel>.ErrorOccured("Account has not been activated", ResponseCodes.RequiresPasswordChange);
                 var fullname = user.LastName + " " + user.FirstName;
                 // generate a new refresh token
@@ -280,9 +280,9 @@ namespace qguardbackend.Core.Services
                         LastName = user.LastName,
                         Email = user.Email,
                         EmailConfirmed = user.EmailConfirmed,
-                        IsActive = user.IsActive,
+                        IsActive = user.IsActive.Value,
                         RequiresPasswordChange = user.RequiresPasswordChange,
-                        otp = user.OTP,
+                        //otp = user.OTP,
                         Role = roles.ToList(),
                     }
                 };
@@ -637,10 +637,11 @@ namespace qguardbackend.Core.Services
                 user.LastName = model.LastName;
                 user.PhoneNumber = model.PhoneNumber;
                 user.FullName = model.FullName;
-                user.Gender = model.Gender;
+                //user.Gender = model.Gender;
 
-                //user.EmailConfirmed = true;
-                user.RequiresPasswordChange = true;
+                user.EmailConfirmed = true;
+                //user.RequiresPasswordChange = true;
+                user.RequiresPasswordChange = false;
                 //user.InstitutionId = institutionId;
                 var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -690,16 +691,16 @@ namespace qguardbackend.Core.Services
 
                     if (model.PassportUpload is not null && model.PassportUpload.Length > 0)
                     {
-                        var logoResult = await UploadFileAsync(model.PassportUpload);
-                        if (!logoResult.Success)
-                            return CustomResult<RegisterUserResponseDto>.ErrorOccured(logoResult.Error, ResponseCodes.BadRequestErrorCode);
+                        //var logoResult = await UploadFileAsync(model.PassportUpload);
+                        //if (!logoResult.Success)
+                        //    return CustomResult<RegisterUserResponseDto>.ErrorOccured(logoResult.Error, ResponseCodes.BadRequestErrorCode);
 
-                        userdetails.ProfilePixUrl = logoResult.Url;
+                        //userdetails.ProfilePixUrl = logoResult.Url;
                     }
 
                     userdetails.FirstName = model.FirstName;
                     userdetails.FullName = $"{model.FirstName}  {model.LastName}";
-                    userdetails.Gender = model.Gender;
+                    //userdetails.Gender = model.Gender;
                     userdetails.PhoneNumber = model.PhoneNumber;
                     userdetails.IsActive = model.IsActive;
 
@@ -726,6 +727,130 @@ namespace qguardbackend.Core.Services
             });
         }
 
+        
+        public async Task<CustomResult<RegisterUserResponseDto>> RegisterEndUsersAsync(RegisterANewUserRequestDto model)
+        {
+            var InsTId = await _userMgmtService.GetTenantId();
+            var loggedInUserclaim = await _userMgmtService.GetUserClaim();
+            if (!InsTId.IsSuccess)
+            {
+                return CustomResult<RegisterUserResponseDto>.Failure(CustomError.InvalidTenant, ResponseCodes.InvalidTenant);
+            }
+
+            var strategy = _context.Database.CreateExecutionStrategy();
+
+            return await strategy.ExecuteAsync(async () =>
+            {
+                using var transaction = await _context.Database.BeginTransactionAsync();
+
+                //if (!await _context.Institutions.AnyAsync(x => x.Id == InsTId.Data))
+                //    return CustomResult<RegisterUserResponseDto>.ErrorOccured("Institution does not exists", ResponseCodes.NotFoundErrorCode);
+                try
+                {
+                    //var Inst = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == InsTId.Data);
+
+                    //if (Inst == null)
+                    //{
+                    //    return CustomResult<RegisterUserResponseDto>.ErrorOccured("Institution not found!", ResponseCodes.NotFoundErrorCode);
+                    //}
+                    var getRrole = await _context.Roles.FirstOrDefaultAsync(x => x.Name.ToLower() == "enduser");
+
+                    var NewPassword = "Password@123";
+
+                    var registerUser = await RegisterAsync(new RegisterUserRequestDto
+                    {
+                        Email = model.Email,
+                        FullName = $"{model.LastName} {model.FirstName}",
+                        Password = model.Password,
+                        //Password = NewPassword,
+                        //PhoneNumber = model.PhoneNumber,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        RoleId = getRrole.Id,
+                        //RoleId = model.RoleId,
+                        IsActive = true,
+                        //Gender = model.Gender
+                    }, InsTId.Data);
+
+                    if (!registerUser.IsSuccess)
+                    {
+                        return CustomResult<RegisterUserResponseDto>.Failure(CustomError.UnableToProfileUser, ResponseCodes.UnableToProfileUser);
+                    }
+
+                    var addUserAsSystemAdmin = await _context.UserRoles.AddAsync(new ApplicationUserRole
+                    {
+                        CreatedAt = DateTime.UtcNow,
+                        UserId = registerUser.Data.UserId,
+                        RoleId = getRrole.Id,
+                        //InstitutionId = InsTId.Data
+                    });
+
+                    //if the new profile is a system admin role, 
+                    var getRole = await _context.Roles.FirstOrDefaultAsync(x => x.Id == getRrole.Id);
+
+                    if (getRole.Name.ToUpper() == RolenamesConstant.SYSTEMADMIN)
+                    {
+                        //check if the logged in user is a system admin
+
+                        if (loggedInUserclaim.Role.FirstOrDefault(x => x.ToLower().Contains(RolenamesConstant.SYSTEMADMIN.ToLower())) == null)
+                        {
+                            return CustomResult<RegisterUserResponseDto>.Failure(CustomError.YourRoleIsNotAuthorisedforThisAction, ResponseCodes.YourRoleIsNotAuthorisedforThisAction);
+
+                        }
+
+
+                        var getInsAdminRole = await _context.Roles.FirstOrDefaultAsync(x => x.Name.ToLower() == RolenamesConstant.INSTITUTIONADMIN.ToLower());
+                        //var getAllInst = await _context.Institutions.Select(x => x.Id).ToListAsync();
+
+                        //foreach (var inst in getAllInst)
+                        //{
+                        //    await _context.SystemAdminOtherTenantsRole.AddAsync(new SystemAdminOtherTenantsRole
+                        //    {
+                        //        CreatedAt = DateTime.UtcNow,
+                        //        InstitutionId = inst,
+                        //        RoleId = getInsAdminRole.Id,
+                        //        UserId = registerUser.Data.UserId,
+                        //    });
+                        //}
+                    }
+
+                    //if (getRole.Name.ToUpper() == RolenamesConstant.TUTOR)
+                    //{
+                    //    await _context.Tutors.AddAsync(new Tutor
+                    //    {
+                    //        CreatedAt = DateTime.UtcNow,
+                    //        InstitutionId = InsTId.Data,
+                    //        TutorName = $"{model.LastName} {model.FirstName}",
+                    //        ApplicationUserId = registerUser.Data.UserId,
+                    //        IsActive = model.IsActive,
+                    //        IsDeleted = false
+                    //    });
+                    //}
+
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+
+                    _logger.LogInformation($"new User to create with email: {model.Email}, Default Password: {NewPassword}");
+                    _ = Task.Run(async () =>
+                    {
+                        await _emailService.SendWelcomeEmailAsync(new SendWelcomeEmailVM
+                        {
+                            //InstitutionBaseUrl = $"{Inst.HostName}/auth/login",
+                            Fullname = $"{model.LastName} {model.FirstName}",
+                            Password = NewPassword,
+                            receiverEmail = model.Email,
+                        });
+                    });
+                    return registerUser;
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    _logger.LogError(ex, "An error occurred in {Repo}.{MethodName}", typeof(AuthService).Name, nameof(RegisterAsync));
+                    return CustomResult<RegisterUserResponseDto>.Failure(CustomError.SystemExceptionError, ResponseCodes.OperationError);
+                }
+            });
+        }
         public async Task<CustomResult<RegisterUserResponseDto>> RegisterOtherUsersAsync(RegisterOtherUserRequestDto model)
         {
             var InsTId = await _userMgmtService.GetTenantId();
@@ -852,20 +977,20 @@ namespace qguardbackend.Core.Services
             {
                 var getUserDetails = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-                if (getUserDetails.OTP == Otp)
-                {
+                //if (getUserDetails.OTP == Otp)
+                //{
 
-                    getUserDetails.OTP = string.Empty;
-                    getUserDetails.RequiresPasswordChange = false;
+                //    getUserDetails.OTP = string.Empty;
+                //    getUserDetails.RequiresPasswordChange = false;
 
-                    _context.Users.Update(getUserDetails);
-                    _context.SaveChanges();
+                //    _context.Users.Update(getUserDetails);
+                //    _context.SaveChanges();
 
-                    return CustomResult<bool>.Success(
-                    true, ResponseMessages.OTPValidatedSuccessfully);
+                return CustomResult<bool>.Success(
+                true, ResponseMessages.OTPValidatedSuccessfully);
 
-                }
-                return CustomResult<bool>.Failure(CustomError.InvalidOTP, ResponseCodes.InvalidOTP);
+                //}
+                //return CustomResult<bool>.Failure(CustomError.InvalidOTP, ResponseCodes.InvalidOTP);
 
             }
             catch (Exception ex)
@@ -912,7 +1037,7 @@ namespace qguardbackend.Core.Services
                 //generate new OTP and update the user OTP
                 var newOTP = qguardbackend.Data.Common.Utility.GenerateOTP(5);
 
-                getUserDetails.OTP = newOTP;
+                //getUserDetails.OTP = newOTP;
 
                 _context.Users.Update(getUserDetails);
                 _context.SaveChanges();

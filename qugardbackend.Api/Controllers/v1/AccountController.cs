@@ -71,8 +71,26 @@ namespace qguardbackend.Controllers.v1
         /// <param name="model"></param>
         /// <returns></returns>
         //[AllowAnonymous]
-        [HttpPost("create-other-users")]
-        public async Task<IActionResult> RegisterOtherUsersAsync([FromBody] RegisterOtherUserRequestDto model)
+        //[HttpPost("create-other-users")]
+        //public async Task<IActionResult> RegisterOtherUsersAsync([FromBody] RegisterOtherUserRequestDto model)
+        //{
+        //    if (model == null)
+        //    {
+        //        return new StatusCodeResult(500);
+        //    }
+        //    if (!ModelState.IsValid) return UnprocessableEntity(GetValidationErrors<bool>(ModelState));
+
+        //    var result = await _authService.RegisterOtherUsersAsync(model);
+        //    if (result.ResponseCode != ResponseCodes.SuccessCode)
+        //    {
+        //        return BadRequest(result);
+        //    }
+        //    return Ok(result);
+        //}
+
+        [HttpPost("create-end-users")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RegisterEndUsersAsync([FromBody] RegisterANewUserRequestDto model)
         {
             if (model == null)
             {
@@ -80,7 +98,7 @@ namespace qguardbackend.Controllers.v1
             }
             if (!ModelState.IsValid) return UnprocessableEntity(GetValidationErrors<bool>(ModelState));
 
-            var result = await _authService.RegisterOtherUsersAsync(model);
+            var result = await _authService.RegisterEndUsersAsync(model);
             if (result.ResponseCode != ResponseCodes.SuccessCode)
             {
                 return BadRequest(result);
@@ -88,34 +106,37 @@ namespace qguardbackend.Controllers.v1
             return Ok(result);
         }
 
-        [AllowAnonymous]
-        [HttpPut("update-user/{userid}")]
-        public async Task<IActionResult> UpdateUserAsync(string userid, [FromForm] UpdateUserRequestDto model)
-        {
-            if (model == null) return new StatusCodeResult(500);
 
-            if (!ModelState.IsValid) return UnprocessableEntity(GetValidationErrors<bool>(ModelState));
 
-            var result = await _authService.UpdateUserAsync(userid, model);
-            if (result.ResponseCode != ResponseCodes.SuccessCode)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
 
-        [AllowAnonymous]
-        [HttpPut("change-status/{userId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<CustomResult<bool>>))]
-        public async Task<IActionResult> ChangeStatus(string userId)
-        {
-            var response = await _userManagementService.ChangeAccountStatus(userId);
-            if (response.ResponseCode != ResponseCodes.SuccessCode)
-            {
-                return BadRequest(response);
-            }
-            return Ok(response);
-        }
+        //[AllowAnonymous]
+        //[HttpPut("update-user/{userid}")]
+        //public async Task<IActionResult> UpdateUserAsync(string userid, [FromForm] UpdateUserRequestDto model)
+        //{
+        //    if (model == null) return new StatusCodeResult(500);
+
+        //    if (!ModelState.IsValid) return UnprocessableEntity(GetValidationErrors<bool>(ModelState));
+
+        //    var result = await _authService.UpdateUserAsync(userid, model);
+        //    if (result.ResponseCode != ResponseCodes.SuccessCode)
+        //    {
+        //        return BadRequest(result);
+        //    }
+        //    return Ok(result);
+        //}
+
+        //[AllowAnonymous]
+        //[HttpPut("change-status/{userId}")]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<CustomResult<bool>>))]
+        //public async Task<IActionResult> ChangeStatus(string userId)
+        //{
+        //    var response = await _userManagementService.ChangeAccountStatus(userId);
+        //    if (response.ResponseCode != ResponseCodes.SuccessCode)
+        //    {
+        //        return BadRequest(response);
+        //    }
+        //    return Ok(response);
+        //}
 
         /// <summary>
         /// Spool all users

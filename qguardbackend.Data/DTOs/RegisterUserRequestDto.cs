@@ -3,6 +3,25 @@ using System.ComponentModel.DataAnnotations;
 
 namespace qguardbackend.Data.DTOs
 {
+    public class RegisterANewUserRequestDto
+    {
+        [Required(ErrorMessage = "Email is required")]
+        public string Email { get; set; }
+
+
+        [Required(ErrorMessage = "First name is required")]
+        [MinLength(3, ErrorMessage = "First name must be at least 3 characters long")]
+        [MaxLength(100, ErrorMessage = "First name cannot exceed 100 characters")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Last name is required")]
+        [MinLength(3, ErrorMessage = "Last name must be at least 3 characters long")]
+        [MaxLength(100, ErrorMessage = "Last name cannot exceed 100 characters")]
+        public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; }
+    }
     public class RegisterOtherUserRequestDto 
     {
         [Required(ErrorMessage = "Email is required")]

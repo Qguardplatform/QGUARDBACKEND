@@ -9,6 +9,7 @@ namespace qguardbackend.Core.Interfaces
     {
         Task<CustomResult<RegisterUserResponseDto>> RegisterAsync(RegisterUserRequestDto model, long institutionId);
         Task<CustomResult<RegisterUserResponseDto>> RegisterOtherUsersAsync(RegisterOtherUserRequestDto model);
+         Task<CustomResult<RegisterUserResponseDto>> RegisterEndUsersAsync(RegisterANewUserRequestDto model);
         Task<CustomResult<RegisterUserResponseDto>> UpdateUserAsync(string userid, UpdateUserRequestDto model);
         Task<CustomResult<ReturnTokenModel>> LoginAsync(LoginRequestDto model);
         Task<CustomResult<ReturnTokenModel>> RefreshToken(RefreshTokenDto model);

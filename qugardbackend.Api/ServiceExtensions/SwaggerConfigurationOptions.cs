@@ -19,14 +19,14 @@ public class SwaggerConfigurationOptions(IApiVersionDescriptionProvider _provide
     {
         var info = new OpenApiInfo()
         {
-            Title = "Examination Portal API",
+            Title = "QGuard API",
             Version = description.ApiVersion.ToString(),
             Contact = new OpenApiContact
             {
-                Email = "daniel.ogwu@vigilearn.com | ayeni.timileyin@vigilearn.com",
-                Name = "daniel.ogwu@vigilearn.com | ayeni.timileyin@vigilearn.com"
+                Email = "qguardplatform@gmail.com",
+                Name = "qguardplatform@gmail.com"
             },
-            Description = "API to power up the Examination Portal",
+            Description = "API to power up the QGuard Portal",
 
         };
 

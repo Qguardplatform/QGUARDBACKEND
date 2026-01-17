@@ -124,68 +124,68 @@ namespace qguardbackend.Controllers.v1
             }
             return Ok(result);
         }
-        [AllowAnonymous]
-        [HttpPost("send-new-login-password")]
-        public async Task<IActionResult> SendNewLogInPassword([FromBody] ForgotPasswordRequestDto request)
-        {
+        //[AllowAnonymous]
+        //[HttpPost("send-new-login-password")]
+        //public async Task<IActionResult> SendNewLogInPassword([FromBody] ForgotPasswordRequestDto request)
+        //{
 
-            if (string.IsNullOrEmpty(request.email))
-            {
-                return new StatusCodeResult(500);
-            }
+        //    if (string.IsNullOrEmpty(request.email))
+        //    {
+        //        return new StatusCodeResult(500);
+        //    }
 
-            if (!ModelState.IsValid)
-                return UnprocessableEntity(GetValidationErrors<bool>(ModelState));
+        //    if (!ModelState.IsValid)
+        //        return UnprocessableEntity(GetValidationErrors<bool>(ModelState));
 
-            var result = await _authService.SendNewLogInPassword(request.email);
+        //    var result = await _authService.SendNewLogInPassword(request.email);
 
-            if (result.ResponseCode != ResponseCodes.SuccessCode)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
-
-
-        [AllowAnonymous]
-        [HttpPost("send-new-login-password-bulk")]
-        public async Task<IActionResult> SendNewLogInPasswordinBulk(DefaultPasswordEmailsListDto requests)
-        {
-
-            //if (string.IsNullOrEmpty(request.email))
-            //{
-            //    return new StatusCodeResult(500);
-            //}
-
-            if (!ModelState.IsValid)
-                return UnprocessableEntity(GetValidationErrors<bool>(ModelState));
-
-            var result = await _authService.SendNewLogInPasswordBulk(requests);
-
-            if (result.ResponseCode != ResponseCodes.SuccessCode)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
+        //    if (result.ResponseCode != ResponseCodes.SuccessCode)
+        //    {
+        //        return BadRequest(result);
+        //    }
+        //    return Ok(result);
+        //}
 
 
-        [AllowAnonymous]
-        [HttpPost("validate-otp")]
-        public async Task<IActionResult> ValidateOTP([FromBody] validateOTP request)
-        {
+        //[AllowAnonymous]
+        //[HttpPost("send-new-login-password-bulk")]
+        //public async Task<IActionResult> SendNewLogInPasswordinBulk(DefaultPasswordEmailsListDto requests)
+        //{
 
-            if (!ModelState.IsValid)
-                return UnprocessableEntity(GetValidationErrors<bool>(ModelState));
+        //    //if (string.IsNullOrEmpty(request.email))
+        //    //{
+        //    //    return new StatusCodeResult(500);
+        //    //}
 
-            var result = await _authService.ValidateOtp(request.UserId, request.otp);
+        //    if (!ModelState.IsValid)
+        //        return UnprocessableEntity(GetValidationErrors<bool>(ModelState));
 
-            if (result.ResponseCode != ResponseCodes.SuccessCode)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
+        //    var result = await _authService.SendNewLogInPasswordBulk(requests);
+
+        //    if (result.ResponseCode != ResponseCodes.SuccessCode)
+        //    {
+        //        return BadRequest(result);
+        //    }
+        //    return Ok(result);
+        //}
+
+
+        //[AllowAnonymous]
+        //[HttpPost("validate-otp")]
+        //public async Task<IActionResult> ValidateOTP([FromBody] validateOTP request)
+        //{
+
+        //    if (!ModelState.IsValid)
+        //        return UnprocessableEntity(GetValidationErrors<bool>(ModelState));
+
+        //    var result = await _authService.ValidateOtp(request.UserId, request.otp);
+
+        //    if (result.ResponseCode != ResponseCodes.SuccessCode)
+        //    {
+        //        return BadRequest(result);
+        //    }
+        //    return Ok(result);
+        //}
 
 
         /// <summary>
@@ -193,22 +193,22 @@ namespace qguardbackend.Controllers.v1
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        [AllowAnonymous]
-        [HttpPost("generate-login-otp/{userId}")]
-        public async Task<IActionResult> GenerateLoginOTP(string userId)
-        {
+        //[AllowAnonymous]
+        //[HttpPost("generate-login-otp/{userId}")]
+        //public async Task<IActionResult> GenerateLoginOTP(string userId)
+        //{
 
-            if (!ModelState.IsValid)
-                return UnprocessableEntity(GetValidationErrors<bool>(ModelState));
+        //    if (!ModelState.IsValid)
+        //        return UnprocessableEntity(GetValidationErrors<bool>(ModelState));
 
-            var result = await _authService.ResendLoginAsync(userId);
+        //    var result = await _authService.ResendLoginAsync(userId);
 
-            if (result.ResponseCode != ResponseCodes.SuccessCode)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
+        //    if (result.ResponseCode != ResponseCodes.SuccessCode)
+        //    {
+        //        return BadRequest(result);
+        //    }
+        //    return Ok(result);
+        //}
 
 
         /// <summary>

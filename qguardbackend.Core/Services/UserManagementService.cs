@@ -88,9 +88,9 @@ namespace qguardbackend.Core.Services
             //userDetails.Institution = Inst;
             userDetails.Firstname = tempQuery.FirstName;
             userDetails.Lastname = tempQuery.LastName;
-            userDetails.Gender = tempQuery.Gender;
+            //userDetails.Gender = tempQuery.Gender;
             //userDetails.Institution = Inst;
-            userDetails.Address = $"{tempQuery.Street}, {tempQuery.City}, {tempQuery.State}, {tempQuery.ZipCode}, {tempQuery.Country}";
+            //userDetails.Address = $"{tempQuery.Street}, {tempQuery.City}, {tempQuery.State}, {tempQuery.ZipCode}, {tempQuery.Country}";
 
             return CustomResult<ApplicationUserResponse>.Success(userDetails);
         }
@@ -219,21 +219,21 @@ namespace qguardbackend.Core.Services
                     UserName = user.UserName,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
-                    Street = user.Street,
-                    City = user.City,
-                    State = user.State,
-                    Gender = user.Gender,
-                    ZipCode = user.ZipCode,
+                    //Street = user.Street,
+                    //City = user.City,
+                    //State = user.State,
+                    //Gender = user.Gender,
+                    //ZipCode = user.ZipCode,
                     FullName = $"{user.FirstName} {user.LastName}",
                     DisplayName = user.UserName,
-                    Address = $"{user.Street}, {user.City}, {user.State}, {user.ZipCode}, {user.Country}",
-                    Country = user.Country,
-                    AuthProvider = user.AuthProvider,
-                    ProfilePixUrl = user.ProfilePixUrl,
-                    LastSignInDate = user.LastSignInDate,
-                    IsActive = user.IsActive,
-                    ApprovalStatus = user.ApprovalStatus,
-                    ApprovalActionBy = user.ApprovalActionBy,
+                    //Address = $"{user.Street}, {user.City}, {user.State}, {user.ZipCode}, {user.Country}",
+                    //Country = user.Country,
+                    //AuthProvider = user.AuthProvider,
+                    //ProfilePixUrl = user.ProfilePixUrl,
+                    //LastSignInDate = user.LastSignInDate,
+                    //IsActive = user.IsActive,
+                    //ApprovalStatus = user.ApprovalStatus,
+                    //ApprovalActionBy = user.ApprovalActionBy,
                     ApprovalActionDate = user.ApprovalActionDate,
                     Roles = roles,
                     //Institution = Inst,
@@ -249,7 +249,7 @@ namespace qguardbackend.Core.Services
 
         public async Task<CustomResult<PagedList<ApplicationUserResponse>>> GetActiveUsersListAsync(QueryModelMini query)
         {
-            var tempQuery = _userManager.Users.Where(x => x.IsActive).OrderByDescending(x => x.CreatedAt).AsQueryable();
+            var tempQuery = _userManager.Users.Where(x => x.IsActive.Value).OrderByDescending(x => x.CreatedAt).AsQueryable();
 
             if (query.StartDate.HasValue && query.EndDate.HasValue)
             {
@@ -409,7 +409,7 @@ namespace qguardbackend.Core.Services
 
             var hasher = new PasswordHasher<ApplicationUser>();
             Guid ID = Guid.NewGuid();
-            string email = "daniel.ogwu@vigilearn.com";
+            string email = "qguardplatform@gmail.com";
 
             var user = new ApplicationUser()
             {
@@ -470,7 +470,7 @@ namespace qguardbackend.Core.Services
                 UserName = x.UserName,
                 Email = x.Email,
                 PhoneNumber = x.PhoneNumber,
-                IsActive = x.IsActive,
+                IsActive = x.IsActive.Value,
                 RoleId = Guid.Parse(x.UserRoles.FirstOrDefault().RoleId),
                 Id = x.Id,
             });
@@ -687,7 +687,7 @@ namespace qguardbackend.Core.Services
                             from r in rj.DefaultIfEmpty()
                             //join i in _context.Institutions on u.InstitutionId equals i.Id into ij
                             //from i in ij.DefaultIfEmpty()
-                            where !u.IsDeleted
+                            where !u.IsDeleted.Value
                             select new
                             {
                                 User = u,

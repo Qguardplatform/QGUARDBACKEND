@@ -1,17 +1,22 @@
 [
-    {
-        "RoleName": "SYSTEMADMIN"
-    },
-    {
-        "RoleName": "INSTITUTIONADMIN"
-    },
-    {
-        "RoleName": "EXAMINER"
-    },
-    {
-        "RoleName": "CANDIDATE"
-    },
-    {
-        "RoleName": "TUTOR"
-    }
+  {
+    "RoleName": "SYSTEMADMIN"
+  },
+  {
+      "RoleName": "ENDUSERS"
+  }
+  
+  //,
+  //{
+  //    "RoleName": "INSTITUTIONADMIN"
+  //},
+  //{
+  //    "RoleName": "EXAMINER"
+  //},
+  //{
+  //    "RoleName": "CANDIDATE"
+  //},
+  //{
+  //    "RoleName": "TUTOR"
+  //}
 ]
