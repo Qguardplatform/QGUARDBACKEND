@@ -210,13 +210,13 @@ namespace qguardbackend.Core.Services
                 //-----------------------
 
                 //if (loggedInUserRoles.ToLower() != RolesEnum.SYSTEMADMIN.GetEnumText().ToLower())
-                if (!userRoles.Contains( RolesEnum.SYSTEMADMIN.GetEnumText().ToLower())
-                    )
-                {
-                    itemFromDb = itemFromDb.Where(r => r.Name.ToLower() != RolesEnum.SYSTEMADMIN.GetEnumText().ToLower()
-                    && r.Name.ToLower() != RolesEnum.CANDIDATE.GetEnumText().ToLower()
-                    ).ToList();
-                }
+                //if (!userRoles.Contains( RolesEnum.SYSTEMADMIN.GetEnumText().ToLower())
+                //    )
+                //{
+                //    itemFromDb = itemFromDb.Where(r => r.Name.ToLower() != RolesEnum.SYSTEMADMIN.GetEnumText().ToLower()
+                //    && r.Name.ToLower() != RolesEnum.CANDIDATE.GetEnumText().ToLower()
+                //    ).ToList();
+                //}
 
                 if (itemFromDb.Count > 0)
                 {

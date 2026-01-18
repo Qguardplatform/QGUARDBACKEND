@@ -253,9 +253,9 @@ public static class ApplicationServicesExtension
 
         app.UseNWebSecurity();
 
-        app.TenantvalidityMiddlewareHandler();
+        //app.TenantvalidityMiddlewareHandler();
 
-        app.UserTenantAccessMiddlewareHandler();
+        //app.UserTenantAccessMiddlewareHandler();
 
         app.UseStaticFiles();
 

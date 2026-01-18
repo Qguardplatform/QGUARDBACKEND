@@ -51,15 +51,15 @@ internal class SecurityRequirementsOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        operation.Parameters.Add(new OpenApiParameter
-        {
-            Name = "TenantCode",
-            Description = "The TenantCode of the Client Host calling the API",
-            In = ParameterLocation.Header,
-            Schema = new OpenApiSchema() { Type = "string" },
-            Required = true
+        //operation.Parameters.Add(new OpenApiParameter
+        //{
+        //    Name = "TenantCode",
+        //    Description = "The TenantCode of the Client Host calling the API",
+        //    In = ParameterLocation.Header,
+        //    Schema = new OpenApiSchema() { Type = "string" },
+        //    Required = true
 
-        });
+        //});
 
         var anonControllerScope = context
             .MethodInfo

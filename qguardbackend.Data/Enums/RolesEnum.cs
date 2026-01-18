@@ -14,18 +14,18 @@ namespace qguardbackend.Data.Enums
         [EnumText("SYSTEMADMIN")]
         SYSTEMADMIN,
 
-        [EnumText("INSTITUTIONADMIN")]
+        [EnumText("ENDUSER")]
 
-        INSTITUTIONADMIN,
+        ENDUSER//,
 
-        [EnumText("CANDIDATE")]
-        CANDIDATE,
+        //[EnumText("CANDIDATE")]
+        //CANDIDATE,
 
-        [EnumText("EXAMINER")]
-        EXAMINER,
+        //[EnumText("EXAMINER")]
+        //EXAMINER,
 
-        [EnumText("TUTOR")]
-        TUTOR,
+        //[EnumText("TUTOR")]
+        //TUTOR,
 
       
     }
