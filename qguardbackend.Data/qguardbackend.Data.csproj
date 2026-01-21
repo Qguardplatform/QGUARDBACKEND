@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Entities\AuditLog.cs" />
     <Compile Remove="Entities\Candidate.cs" />
     <Compile Remove="Entities\CandidateExamResult.cs" />
     <Compile Remove="Entities\CandidateExamsSubmission.cs" />

@@ -139,6 +139,9 @@
     <None Update="EmailTemplate\WelcomeToqguardbackendEmail.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="EmailTemplate\WelcomeToQGuardEmail.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

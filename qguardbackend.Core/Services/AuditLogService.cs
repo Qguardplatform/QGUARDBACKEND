@@ -45,7 +45,7 @@ namespace qguardbackend.Core.Services
             try
             {
                 IQueryable<AuditLog> records = _context.AuditLogs
-                                            .Include(x => x.Institution)
+                                            //.Include(x => x.Institution)
                                             .OrderByDescending(x => x.CreatedAt);
 
                 var end = AddTimeSpan(filter.EndDate ?? DateTime.Now);
@@ -72,7 +72,7 @@ namespace qguardbackend.Core.Services
                     var searchWord = filter.SearchWord.Trim().ToLower();
                     records = records.Where(x =>
                         x.UserId.ToLower().Contains(searchWord) ||
-                        x.Institution.Name.ToLower().Contains(searchWord) ||
+                        //x.Institution.Name.ToLower().Contains(searchWord) ||
                         x.Description.ToLower().Contains(searchWord) ||
                         x.Action.ToLower().Contains(searchWord) ||
                         x.IPAddress.ToLower().Contains(searchWord));
@@ -87,7 +87,7 @@ namespace qguardbackend.Core.Services
                     && tenCode.Data.ToLower() !="master"
                     )
                 {
-                    records = records.Where(x => x.Institution.Code.ToLower()==tenCode.Data.ToLower());
+                    //records = records.Where(x => x.Institution.Code.ToLower()==tenCode.Data.ToLower());
 
                 }
 
@@ -108,12 +108,12 @@ namespace qguardbackend.Core.Services
                     Action = record.Action,
                     UserName = string.IsNullOrEmpty(record.UserId) ? "n/a" : record.UserId,
                     Description = string.IsNullOrEmpty(record.Description) ? "n/a" : record.Description,
-                    Institution = record.Institution == null ? null : new InstitutionResponseDto
-                    {
-                        Id = record.Institution.Id,
-                        Name = record.Institution.Name,
-                        Code = record.Institution.Code
-                    },
+                    //Institution = record.Institution == null ? null : new InstitutionResponseDto
+                    //{
+                    //    Id = record.Institution.Id,
+                    //    Name = record.Institution.Name,
+                    //    Code = record.Institution.Code
+                    //},
                     CreatedDate = record.CreatedAt
                 }).ToListAsync();
 
@@ -140,7 +140,7 @@ namespace qguardbackend.Core.Services
                     return CustomResult<PaginatedResult<AuditLogReadModel>>.Failure(CustomError.InvalidTenant, ResponseCodes.InvalidTenant);
 
                 IQueryable<AuditLog> records = _context.AuditLogs
-                                            .Include(x => x.Institution)
+                                            //.Include(x => x.Institution)
                                             .Where(x => x.UserId.ToLower() == email.ToLower() && x.InstitutionId == tenantIdResult.Data);
 
                 var end = AddTimeSpan(filter.EndDate ?? DateTime.Now);
@@ -154,7 +154,7 @@ namespace qguardbackend.Core.Services
                     && tenCode.Data.ToLower() == "master"
                     )
                 {
-                    records = records.Where(x => x.Institution.Code.ToLower() == tenCode.Data.ToLower());
+                    //records = records.Where(x => x.Institution.Code.ToLower() == tenCode.Data.ToLower());
 
                 }
                 if (!string.IsNullOrEmpty(filter.Action))
@@ -173,7 +173,7 @@ namespace qguardbackend.Core.Services
                     var searchWord = filter.SearchWord.Trim().ToLower();
                     records = records.Where(x =>
                         x.UserId.ToLower().Contains(searchWord) ||
-                        x.Institution.Name.ToLower().Contains(searchWord) ||
+                        //x.Institution.Name.ToLower().Contains(searchWord) ||
                         x.Description.ToLower().Contains(searchWord) ||
                         x.Action.ToLower().Contains(searchWord) ||
                         x.IPAddress.ToLower().Contains(searchWord));
@@ -201,12 +201,12 @@ namespace qguardbackend.Core.Services
                     Action = record.Action,
                     UserName = string.IsNullOrEmpty(record.UserId) ? "n/a" : record.UserId,
                     Description = string.IsNullOrEmpty(record.Description) ? "n/a" : record.Description,
-                    Institution = record.Institution == null ? null : new InstitutionResponseDto
-                    {
-                        Id = record.Institution.Id,
-                        Name = record.Institution.Name,
-                        Code = record.Institution.Code
-                    },
+                    //Institution = record.Institution == null ? null : new InstitutionResponseDto
+                    //{
+                    //    Id = record.Institution.Id,
+                    //    Name = record.Institution.Name,
+                    //    Code = record.Institution.Code
+                    //},
                     CreatedDate = record.CreatedAt
                 }).ToListAsync();
 
@@ -228,9 +228,9 @@ namespace qguardbackend.Core.Services
         {
             try
             {
-                IQueryable<AuditLog> records = _context.AuditLogs
-                                            .Include(x => x.Institution)
-                                            .Where(x => x.Institution.Code.ToLower() == code.ToLower());
+                IQueryable<AuditLog> records = _context.AuditLogs;
+                                            //.Include(x => x.Institution)
+                                            //.Where(x => x.Institution.Code.ToLower() == code.ToLower());
 
                 var end = AddTimeSpan(filter.EndDate ?? DateTime.Now);
 
@@ -255,7 +255,7 @@ namespace qguardbackend.Core.Services
                     var searchWord = filter.SearchWord.Trim().ToLower();
                     records = records.Where(x =>
                         x.UserId.ToLower().Contains(searchWord) ||
-                        x.Institution.Name.ToLower().Contains(searchWord) ||
+                        //x.Institution.Name.ToLower().Contains(searchWord) ||
                         x.Description.ToLower().Contains(searchWord) ||
                         x.Action.ToLower().Contains(searchWord) ||
                         x.IPAddress.ToLower().Contains(searchWord));
@@ -283,12 +283,12 @@ namespace qguardbackend.Core.Services
                     Action = record.Action + " | " + ((AuditActionType)record.EventType).ToString(),
                     UserName = string.IsNullOrEmpty(record.UserId) ? "n/a" : record.UserId,
                     Description = string.IsNullOrEmpty(record.Description) ? "n/a" : record.Description,
-                    Institution = record.Institution == null ? null : new InstitutionResponseDto
-                    {
-                        Id = record.Institution.Id,
-                        Name = record.Institution.Name,
-                        Code = record.Institution.Code
-                    },
+                    //Institution = record.Institution == null ? null : new InstitutionResponseDto
+                    //{
+                    //    Id = record.Institution.Id,
+                    //    Name = record.Institution.Name,
+                    //    Code = record.Institution.Code
+                    //},
                     CreatedDate = record.CreatedAt
                 }).ToListAsync();
 
@@ -310,7 +310,9 @@ namespace qguardbackend.Core.Services
         {
             try
             {
-                var record = await _context.AuditLogs.Include(x => x.Institution).FirstOrDefaultAsync(x => x.Id == id);
+                var record = await _context.AuditLogs
+                    //.Include(x => x.Institution)
+                    .FirstOrDefaultAsync(x => x.Id == id);
                 if (record == null)
                 {
                     return CustomResult<AuditLogReadModel>.ErrorOccured("Record not found", ResponseCodes.NotFoundErrorCode);
@@ -324,12 +326,12 @@ namespace qguardbackend.Core.Services
                     Action = record.Action + " " + ((AuditActionType)record.EventType).ToString(),
                     UserName = string.IsNullOrEmpty(record.UserId) ? "n/a" : record.UserId,
                     Description = string.IsNullOrEmpty(record.Description) ? "n/a" : record.Description,
-                    Institution = record.Institution == null ? null : new InstitutionResponseDto
-                    {
-                        Id = record.Institution.Id,
-                        Name = record.Institution.Name,
-                        Code = record.Institution.Code
-                    },
+                    //Institution = record.Institution == null ? null : new InstitutionResponseDto
+                    //{
+                    //    Id = record.Institution.Id,
+                    //    Name = record.Institution.Name,
+                    //    Code = record.Institution.Code
+                    //},
                     CreatedDate = record.CreatedAt
                 };
                 return CustomResult<AuditLogReadModel>.Success(model);

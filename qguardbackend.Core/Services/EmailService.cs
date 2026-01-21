@@ -1,30 +1,35 @@
-﻿using Microsoft.Extensions.Options;
-using System.Net.Mail;
+﻿using Mailjet.Client;
+using Mailjet.Client.TransactionalEmails;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using qguardbackend.BoilerPlate.Service.Interfaces;
 using qguardbackend.Core.ConfigModels;
-using Microsoft.Extensions.Hosting;
-using qguardbackend.Data.DTOs;
+using qguardbackend.Data.Constants;
 using qguardbackend.Data.DbContext;
-using Microsoft.Extensions.Logging;
+using qguardbackend.Data.DTOs;
 using qguardbackend.Data.DTOs.EmailDtos;
 using qguardbackend.Data.DTOs.Results;
-using qguardbackend.Data.Constants;
-using Newtonsoft.Json;
 using qguardbackend.EmailTemplate;
+using System.Net.Mail;
 
 namespace qguardbackend.Core.Services
 {
     public class EmailService : IEmailService
     {
         private readonly IHostEnvironment _hostingEnvironment;
+        private readonly IConfiguration _config;
         private MailSetting _mailsettings;
         private readonly AppDbContext _dbcontext;
         private readonly AzureSetting _azureSetting;
         private readonly ILogger<EmailService> _logger;
-
+        private readonly IMailjetClient _client;
+        //private readonly string _senderEmail = "your-verified-email@domain.com";
         public EmailService(IHostEnvironment hostingEnvironment,
-            ILogger<EmailService> logger,
+            ILogger<EmailService> logger, IConfiguration config,
             IOptions<MailSetting> mailsettings,
             AppDbContext dbContext,
             IOptions<AzureSetting> azureSetting)
@@ -32,10 +37,107 @@ namespace qguardbackend.Core.Services
             _hostingEnvironment = hostingEnvironment;
             _mailsettings = mailsettings.Value;
             _dbcontext = dbContext;
+            _config = config;
             _logger = logger;
             _azureSetting = azureSetting.Value;
+
+            // Fetch keys from appsettings.json or Environment Variables
+            _client = new MailjetClient(_config["Mailjet:ApiKey"], _config["Mailjet:ApiSecret"]);
+        }
+        public async Task SendSingleEmailAsync(string toEmail, string subject, string htmlContent)
+        {
+
+
+            var email = new TransactionalEmailBuilder()
+                .WithFrom(new SendContact(_config["Mailjet:SenderEmail"], _config["Mailjet:SenderName"]))
+                .WithSubject(subject)
+                .WithHtmlPart(htmlContent)
+                .WithTo(new SendContact(toEmail))
+                .Build();
+
+            await _client.SendTransactionalEmailAsync(email);
         }
 
+        public async Task<CustomResult<bool>> SendSingleWelcomeToQGuardEmailAsync(string name, string toEmail, string passsword)
+        {
+            try
+            {
+                string projectRootPath = _hostingEnvironment.ContentRootPath;
+                string confirmationEmailPath = Path.Combine(projectRootPath, "EmailTemplate/WelcomeToQGuardEmail.html");
+
+                string fileContents = File.ReadAllText(confirmationEmailPath);
+                fileContents = fileContents.Replace("##NAME##", $"{name}");
+                //fileContents = fileContents.Replace("##SENDEREMAIL##", _mailsettings.MailFrom);
+                fileContents = fileContents.Replace("##EMAIL##", toEmail);
+                fileContents = fileContents.Replace("##PASSWORD##", passsword);
+                //fileContents = fileContents.Replace("##URL##", model.InstitutionBaseUrl);
+                EmailLog logmodel = new EmailLog();
+                logmodel.Receiver = toEmail;
+                logmodel.Sender = _mailsettings.MailFrom;
+                logmodel.Subject = "Account Creation Email";
+                logmodel.MessageBody = fileContents;
+                logmodel.DateCreated = logmodel.DateToSend = DateTime.Now;
+                logmodel.IsSent = false;
+
+
+
+                var email = new TransactionalEmailBuilder()
+                    .WithFrom(new SendContact(_config["Mailjet:SenderEmail"], _config["Mailjet:SenderName"]))
+                    .WithSubject("Welcome to QGuard")
+                    .WithHtmlPart(fileContents)
+                    .WithTo(new SendContact(toEmail))
+                    .Build();
+
+                var res = await _client.SendTransactionalEmailAsync(email);
+
+                bool result = SendMail(logmodel.Subject, logmodel.Receiver, logmodel.MessageBody);
+
+
+                if (res.Messages.Length>0)
+                {
+                    logmodel.DateSent = DateTime.Now;
+                    logmodel.IsSent = true;
+                    logmodel.Retires++;
+                }
+                else
+                {
+                    logmodel.IsSent = false;
+                    logmodel.Retires++;
+                }
+                await LogEmail(logmodel);
+
+
+                return CustomResult<bool>.Success(true);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return CustomResult<bool>.ErrorOccured(ex.Message, ResponseCodes.SystemExceptionErrorCode);
+            }
+
+
+        }
+
+
+
+
+        // Function 2: Send Bulk Email (Transactional Batch)
+        // Mailjet v3.1 allows up to 50 messages per single API call.
+        public async Task SendBulkEmailAsync(List<string> toEmails, string subject, string htmlContent)
+        {
+
+
+            var messages = toEmails.Select(email => new TransactionalEmailBuilder()
+                .WithFrom(new SendContact(_config["Mailjet:SenderEmail"]))
+                .WithSubject(subject)
+                .WithHtmlPart(htmlContent)
+                .WithTo(new SendContact(email))
+                .Build()).ToList();
+
+            // Sends all 50 messages in one network request
+            await _client.SendTransactionalEmailsAsync(messages);
+        }
         public async Task<CustomResult<bool>> SendExamSubmissionEmailAsync(CustomSendExamDto model)
         {
             try
@@ -275,7 +377,7 @@ namespace qguardbackend.Core.Services
                     .Replace("{{OTP3}}", model.OTP[2].ToString())
                     .Replace("{{OTP4}}", model.OTP[3].ToString())
                     .Replace("{{OTP5}}", model.OTP[4].ToString());
-                   
+
 
 
                 EmailLog logmodel = new EmailLog();

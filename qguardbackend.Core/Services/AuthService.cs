@@ -525,7 +525,7 @@ namespace qguardbackend.Core.Services
                     //InstitutionBaseUrl = getInst.HostName,
                     Fullname = $"{user.LastName} {user.FirstName}",
                     receiverEmail = email,
-                     ExpiresOn = activationTokenexpiresOn
+                    ExpiresOn = activationTokenexpiresOn
                 });
 
                 _logger.LogInformation($"After Email Notification on Password reset: {JsonConvert.SerializeObject(res)}");
@@ -550,7 +550,7 @@ namespace qguardbackend.Core.Services
                 if (user == null) return CustomResult<string>.ErrorOccured($"User with email: {email} not found", ResponseCodes.BadRequestErrorCode);
 
                 //check if the activation token is expired
-                if (user.ActivationTokenExpiresOn<DateTime.UtcNow) return CustomResult<string>.ErrorOccured($"Reset Token is expired, generate another one", ResponseCodes.BadRequestErrorCode);
+                if (user.ActivationTokenExpiresOn < DateTime.UtcNow) return CustomResult<string>.ErrorOccured($"Reset Token is expired, generate another one", ResponseCodes.BadRequestErrorCode);
 
 
                 //if(!user.IsTokenActive) return CustomResult<string>.ErrorOccured($"Reset token has expired!", ResponseCodes.BadRequestErrorCode);
@@ -727,7 +727,7 @@ namespace qguardbackend.Core.Services
             });
         }
 
-        
+
         public async Task<CustomResult<RegisterUserResponseDto>> RegisterEndUsersAsync(RegisterANewUserRequestDto model)
         {
             var InsTId = await _userMgmtService.GetTenantId();
@@ -753,6 +753,11 @@ namespace qguardbackend.Core.Services
                     //{
                     //    return CustomResult<RegisterUserResponseDto>.ErrorOccured("Institution not found!", ResponseCodes.NotFoundErrorCode);
                     //}
+
+
+                    //if (await _context.Users.AnyAsync(x => x.Email.ToUpper() == model.Email.ToUpper() /*&& x.InstitutionId == InsTId.Data*/))
+                    //    return CustomResult<RegisterUserResponseDto>.Failure(CustomError.AccountAlreadyExistsError, ResponseCodes.UnableToProfileUser);
+
                     var getRrole = await _context.Roles.FirstOrDefaultAsync(x => x.Name.ToLower() == "enduser");
 
                     var NewPassword = "Password@123";
@@ -774,7 +779,8 @@ namespace qguardbackend.Core.Services
 
                     if (!registerUser.IsSuccess)
                     {
-                        return CustomResult<RegisterUserResponseDto>.Failure(CustomError.UnableToProfileUser, ResponseCodes.UnableToProfileUser);
+                        return registerUser;
+                        //return CustomResult<RegisterUserResponseDto>.Failure(CustomError.UnableToProfileUser, ResponseCodes.UnableToProfileUser);
                     }
 
                     var addUserAsSystemAdmin = await _context.UserRoles.AddAsync(new ApplicationUserRole
@@ -788,18 +794,18 @@ namespace qguardbackend.Core.Services
                     //if the new profile is a system admin role, 
                     var getRole = await _context.Roles.FirstOrDefaultAsync(x => x.Id == getRrole.Id);
 
-                    if (getRole.Name.ToUpper() == RolenamesConstant.SYSTEMADMIN)
-                    {
+                    //if (getRole.Name.ToUpper() == RolenamesConstant.SYSTEMADMIN)
+                    //{
                         //check if the logged in user is a system admin
 
-                        if (loggedInUserclaim.Role.FirstOrDefault(x => x.ToLower().Contains(RolenamesConstant.SYSTEMADMIN.ToLower())) == null)
-                        {
-                            return CustomResult<RegisterUserResponseDto>.Failure(CustomError.YourRoleIsNotAuthorisedforThisAction, ResponseCodes.YourRoleIsNotAuthorisedforThisAction);
+                        //if (loggedInUserclaim.Role.FirstOrDefault(x => x.ToLower().Contains(RolenamesConstant.SYSTEMADMIN.ToLower())) == null)
+                        //{
+                        //    return CustomResult<RegisterUserResponseDto>.Failure(CustomError.YourRoleIsNotAuthorisedforThisAction, ResponseCodes.YourRoleIsNotAuthorisedforThisAction);
 
-                        }
+                        //}
 
 
-                        var getInsAdminRole = await _context.Roles.FirstOrDefaultAsync(x => x.Name.ToLower() == RolenamesConstant.INSTITUTIONADMIN.ToLower());
+                        //var getInsAdminRole = await _context.Roles.FirstOrDefaultAsync(x => x.Name.ToLower() == RolenamesConstant.INSTITUTIONADMIN.ToLower());
                         //var getAllInst = await _context.Institutions.Select(x => x.Id).ToListAsync();
 
                         //foreach (var inst in getAllInst)
@@ -812,7 +818,7 @@ namespace qguardbackend.Core.Services
                         //        UserId = registerUser.Data.UserId,
                         //    });
                         //}
-                    }
+                    //}
 
                     //if (getRole.Name.ToUpper() == RolenamesConstant.TUTOR)
                     //{
@@ -831,16 +837,18 @@ namespace qguardbackend.Core.Services
                     await transaction.CommitAsync();
 
                     _logger.LogInformation($"new User to create with email: {model.Email}, Default Password: {NewPassword}");
-                    _ = Task.Run(async () =>
-                    {
-                        await _emailService.SendWelcomeEmailAsync(new SendWelcomeEmailVM
-                        {
-                            //InstitutionBaseUrl = $"{Inst.HostName}/auth/login",
-                            Fullname = $"{model.LastName} {model.FirstName}",
-                            Password = NewPassword,
-                            receiverEmail = model.Email,
-                        });
-                    });
+                    //_ = Task.Run(async () =>
+                    //{
+                        //await _emailService.SendWelcomeEmailAsync(new SendWelcomeEmailVM
+                        //{
+                        //    //InstitutionBaseUrl = $"{Inst.HostName}/auth/login",
+                        //    Fullname = $"{model.LastName} {model.FirstName}",
+                        //    Password = NewPassword,
+                        //    receiverEmail = model.Email,
+                        //});
+                        await _emailService.SendSingleWelcomeToQGuardEmailAsync($"{model.LastName} {model.FirstName}", model.Email, NewPassword);
+
+                    //});
                     return registerUser;
                 }
                 catch (Exception ex)
@@ -893,7 +901,8 @@ namespace qguardbackend.Core.Services
 
                     if (!registerUser.IsSuccess)
                     {
-                        return CustomResult<RegisterUserResponseDto>.Failure(CustomError.UnableToProfileUser, ResponseCodes.UnableToProfileUser);
+                        //return CustomResult<RegisterUserResponseDto>.Failure(CustomError.UnableToProfileUser, ResponseCodes.UnableToProfileUser);
+                        return registerUser;
                     }
 
                     var addUserAsSystemAdmin = await _context.UserRoles.AddAsync(new ApplicationUserRole

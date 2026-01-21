@@ -25,5 +25,13 @@ namespace qguardbackend.BoilerPlate.Service.Interfaces
         Task<CustomResult<bool>> SendPasswordResetEmailAsync(SendPasswordResetEmailVM model);
         Task<bool> UnverifiedAccountPasswordLink(string token, string email, string fullName, string userId, string url);
         EmailLog EmailConfirmationV2(string token, string email, string fullName, string userId, string url, string userType, string schoolLogo, string schoolName = null, string password = null);
+
+
+        Task SendSingleEmailAsync(string toEmail, string subject, string htmlContent);
+        Task SendBulkEmailAsync(List<string> toEmails, string subject, string htmlContent);
+
+
+        Task<CustomResult<bool>> SendSingleWelcomeToQGuardEmailAsync(string name, string toEmail, string passsword);
+
     }
 }

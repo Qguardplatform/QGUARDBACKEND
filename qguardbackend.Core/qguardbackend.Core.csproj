@@ -8,7 +8,6 @@
   <ItemGroup>
     <Compile Remove="BackGroundService\EmailNotificationBackgroundService.cs" />
     <Compile Remove="Interfaces\IApplicationUserService.cs" />
-    <Compile Remove="Interfaces\IAuditLogService.cs" />
     <Compile Remove="Interfaces\ICandidateService.cs" />
     <Compile Remove="Interfaces\ICourseService.cs" />
     <Compile Remove="Interfaces\IDashboardService.cs" />
@@ -30,7 +29,6 @@
     <Compile Remove="Interfaces\ITokenService.cs" />
     <Compile Remove="Interfaces\ITutorsService.cs" />
     <Compile Remove="Services\ApplicationUserService.cs" />
-    <Compile Remove="Services\AuditLogService.cs" />
     <Compile Remove="Services\CandidateService.cs" />
     <Compile Remove="Services\CourseService.cs" />
     <Compile Remove="Services\DashboardService.cs" />
@@ -71,6 +69,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="FluentEmail.Core" Version="3.0.2" />
+		<PackageReference Include="Mailjet.Api" Version="3.0.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.14" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.2" />
