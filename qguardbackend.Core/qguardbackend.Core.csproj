@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Compile Remove="BackGroundService\EmailNotificationBackgroundService.cs" />
+    <Compile Remove="BackGroundService\EmailNotificationChannel.cs" />
     <Compile Remove="Interfaces\IApplicationUserService.cs" />
     <Compile Remove="Interfaces\ICandidateService.cs" />
     <Compile Remove="Interfaces\ICourseService.cs" />

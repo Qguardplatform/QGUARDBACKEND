@@ -1,4 +1,6 @@
 using qguardbackend.Api.ServiceExtensions;
+using qguardbackend.Data.DTOs;
+
 //using qguardbackend.ServiceExtensions;
 using Serilog;
 using System.Text.Json.Serialization;
@@ -15,6 +17,7 @@ try
     builder.Services.ConfigureServices(builder.Configuration);
     // ? Register HttpClientFactory
     builder.Services.AddHttpClient();
+    builder.Services.AddApplicationOptions();
     //builder.Services.AddTransient<CustomHttpHandler>();
     //builder.Services.AddHttpClient("clientRequest").AddHttpMessageHandler<CustomHttpHandler>();
 
@@ -34,3 +37,58 @@ finally
 {
     Log.CloseAndFlush();
 };
+
+
+
+
+//-------------------------
+
+public static class ApplicationOptionsExtension
+{
+    public static IServiceCollection AddApplicationOptions(this IServiceCollection services)
+    {
+        //services
+        //.AddOptions<SendGridOptions>()
+        //.BindConfiguration("SendGridOptions")
+        //.ValidateDataAnnotations()
+        //.ValidateOnStart();
+
+        //services
+        //.AddOptions<NotificationOptions>()
+        //.BindConfiguration("NotificationOptions")
+        //.ValidateDataAnnotations()
+        //.ValidateOnStart();
+
+        //services
+        //.AddOptions<PushNotificationOptions>()
+        //.BindConfiguration("PushNotificationOptions")
+        //.ValidateDataAnnotations()
+        //.ValidateOnStart();
+
+        //services
+        //.AddOptions<OrderOptions>()
+        //.BindConfiguration("OrderOptions")
+        //.ValidateDataAnnotations()
+        //.ValidateOnStart();
+
+        //services
+        //.AddOptions<MiddlewareServiceOptions>()
+        //.BindConfiguration("MiddlewareServiceOptions")
+        //.ValidateDataAnnotations()
+        //.ValidateOnStart();
+
+        //services
+        //.AddOptions<SlidingWindowRateLimitingOptions>()
+        //.BindConfiguration("SlidingWindowRateLimitingOptions")
+        //.ValidateDataAnnotations()
+        //.ValidateOnStart();
+
+        services
+        .AddOptions<AWS>()
+        .BindConfiguration("AWS")
+        .ValidateDataAnnotations()
+        .ValidateOnStart();
+
+        return services;
+    }
+}

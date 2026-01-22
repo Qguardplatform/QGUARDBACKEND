@@ -1,28 +1,30 @@
-﻿using qguardbackend.Data.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using qguardbackend.Data.DbContext;
+﻿using Amazon.Runtime.Internal.Util;
 using Amazon.S3;
-using qguardbackend.Core.Interfaces;
-using qguardbackend.Core.Services;
-using qguardbackend.Core.Profiles;
 using Asp.Versioning.ApiExplorer;
-using qguardbackend.Api.Middleware;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using qguardbackend.Api.Middleware;
+using qguardbackend.Application.Interfaces;
+using qguardbackend.Application.Services;
+using qguardbackend.BoilerPlate.Service.Implementations;
+using qguardbackend.BoilerPlate.Service.Interfaces;
 using qguardbackend.Core.ApplicationOptions;
+using qguardbackend.Core.BackGroundService;
+using qguardbackend.Core.ConfigModels;
+using qguardbackend.Core.Interfaces;
+using qguardbackend.Core.Profiles;
+using qguardbackend.Core.Services;
+using qguardbackend.Data.DbContext;
+using qguardbackend.Data.Entities;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
-using qguardbackend.Core.ConfigModels;
-using qguardbackend.BoilerPlate.Service.Interfaces;
-using qguardbackend.BoilerPlate.Service.Implementations;
-using qguardbackend.Core.BackGroundService;
-using Amazon.Runtime.Internal.Util;
+using System.Text;
 
 namespace qguardbackend.Api.ServiceExtensions;
 
@@ -44,7 +46,7 @@ public static class ApplicationServicesExtension
         services.AddAutoMapper(typeof(AutoMapperProfile));
 
         services.AddAWSService<IAmazonS3>();
-        services.AddSingleton<EmailNotificationChannel>();
+        //services.AddSingleton<EmailNotificationChannel>();
         //services.AddHostedService<EmailNotificationBackgroundService>();
 
         services.AddSingleton<IBackgroundEmailQueue, BackgroundEmailQueue>();
@@ -52,9 +54,10 @@ public static class ApplicationServicesExtension
 
         //configure services
         services.AddScoped<IS3Service, S3Service>();
+        services.AddScoped<IUtilityService, UtilityService>();
         //services.AddScoped<IInstitutionService, InstitutionService>();
         services.AddScoped<IAuthService, AuthService>();
-        //services.AddScoped<IHttpService, HttpService>();
+        services.AddScoped<IHttpService, HttpService>();
         services.AddScoped<IEmailService, EmailService>();
         //services.AddScoped<IAuditLogService, AuditLogService>();
         services.AddScoped<IAzureService, AzureService>();

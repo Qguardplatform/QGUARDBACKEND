@@ -17,7 +17,7 @@ using qguardbackend.Data.Entities;
 using qguardbackend.Data.Model;
 using Firebase.Auth;
 using FluentEmail.Core;
-using LS1_Backend.LS1.Shared.Helpers;
+using qguardbackend.Shared.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

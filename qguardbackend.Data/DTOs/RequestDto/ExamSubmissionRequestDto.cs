@@ -53,7 +53,7 @@
 
     public class StudentExamDetailsDto
     {
-        public CandidateListDto Candidate { get; set; }
+        //public CandidateListDto Candidate { get; set; }
         public long ExamScheduleId { get; set; }
         public ExamTakenDetailsDto ExamDetails { get; set; }
     }

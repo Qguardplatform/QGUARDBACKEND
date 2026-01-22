@@ -7,6 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTOs\CandidateModel.cs" />
+    <Compile Remove="DTOs\CourseModel.cs" />
+    <Compile Remove="DTOs\DepartmentDto.cs" />
+    <Compile Remove="DTOs\EnforcementActionModel.cs" />
+    <Compile Remove="DTOs\ExamQuestionListModel.cs" />
+    <Compile Remove="DTOs\ExamScheduleDto.cs" />
+    <Compile Remove="DTOs\FacultyDto.cs" />
+    <Compile Remove="DTOs\LevelModel.cs" />
+    <Compile Remove="DTOs\ProctorMeTrackerModel.cs" />
+    <Compile Remove="DTOs\ProgramModel.cs" />
+    <Compile Remove="DTOs\QuestionBankModel.cs" />
+    <Compile Remove="DTOs\SemesterModel.cs" />
+    <Compile Remove="DTOs\SessionDto.cs" />
     <Compile Remove="Entities\Candidate.cs" />
     <Compile Remove="Entities\CandidateExamResult.cs" />
     <Compile Remove="Entities\CandidateExamsSubmission.cs" />
@@ -38,6 +51,7 @@
     <Compile Remove="Entities\Session.cs" />
     <Compile Remove="Entities\State.cs" />
     <Compile Remove="Entities\Tutor.cs" />
+    <Compile Remove="Validators\InstitutionValidator.cs" />
   </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Asp.Versioning.Mvc" Version="6.4.1" />

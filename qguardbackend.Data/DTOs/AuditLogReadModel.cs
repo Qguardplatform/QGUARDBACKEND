@@ -9,7 +9,7 @@
         public string IPAddress { get; set; }
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
-        public InstitutionResponseDto Institution { get; set; }
+        //public InstitutionResponseDto Institution { get; set; }
     }
 
     public class AuditLogWriteModel

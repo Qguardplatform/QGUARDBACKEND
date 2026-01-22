@@ -424,7 +424,8 @@ namespace qguardbackend.Core.Services
                 fileContents = fileContents.Replace("##NAME##", $"{model.Fullname}");
                 fileContents = fileContents.Replace("##EMAIL##", $"{model.receiverEmail}");
                 fileContents = fileContents.Replace("##SENDEREMAIL##", _mailsettings.MailFrom);
-                fileContents = fileContents.Replace("##URL##", model.InstitutionBaseUrl);
+                //fileContents = fileContents.Replace("##URL##", model.InstitutionBaseUrl);
+                fileContents = fileContents.Replace("##URL##", _config["AppDetails:FrontEndBaseUrl"]);
                 fileContents = fileContents.Replace("##PASSWORDRESETTOKEN##", model.PasswordResetToken);
                 fileContents = fileContents.Replace("##EXPIRESON##", model.ExpiresOn.ToString());
                 EmailLog logmodel = new EmailLog();

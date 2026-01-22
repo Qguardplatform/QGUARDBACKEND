@@ -19,6 +19,19 @@ namespace qguardbackend.Data.DTOs.ResponseDto
             public string LGA { get; set; }
             public string State { get; set; }
             public string Country { get; set; }
+            public List<ReportLogUploadResponseDto> ReportLogUploads { get; set; }
         
     }
+
+    public class ReportLogUploadResponseDto
+    {
+        public long Id { get; set; }
+        public string FileName { get; set; }
+        public string? DocumentsType { get; set; }
+
+        public string? FilePath { get; set; }
+        public long? FileSize { get; set; }
+        public string? MimeType { get; set; }
+    }
+
 }

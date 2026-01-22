@@ -28,7 +28,7 @@
         public DateTime? ApprovalActionDate { get; set; }
         public DateTime DateCreated { get; set; }
         public List<ApplicationUserRoleResponse> Roles { get; set; }
-        public InstitutionResponseDto Institution { get; set; }
+        //public InstitutionResponseDto Institution { get; set; }
     }
 
     public class ApplicationUserRoleResponse

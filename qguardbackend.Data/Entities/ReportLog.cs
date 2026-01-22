@@ -3,9 +3,9 @@ using qguardbackend.Data.Abstracts;
 
 namespace qguardbackend.Data.Entities
 {
-    public class ReportLogs : BaseEntity
+    public class ReportLog : BaseEntity
     {
-        public static ReportLogs Create(
+        public static ReportLog Create(
 
             String Name, String Socials, String Description,
             String Address, String NearestBustop, String City,
@@ -13,7 +13,7 @@ namespace qguardbackend.Data.Entities
 
             )
         {
-            return new ReportLogs()
+            return new ReportLog()
             {
                 Name = Name,
                 Socials = Socials,

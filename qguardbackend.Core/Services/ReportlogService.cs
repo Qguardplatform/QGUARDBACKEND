@@ -1,6 +1,8 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using qguardbackend.Application.Interfaces;
 using qguardbackend.Core.Interfaces;
 using qguardbackend.Data.Common;
 using qguardbackend.Data.Constants;
@@ -11,6 +13,7 @@ using qguardbackend.Data.DTOs.ResponseDto;
 using qguardbackend.Data.DTOs.Results;
 using qguardbackend.Data.Entities;
 using qguardbackend.Data.Enums;
+using qguardbackend.Shared.DTOs.RequestDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +29,9 @@ namespace qguardbackend.Core.Services
         private readonly AppDbContext _context;
         private readonly IAuditLogService _auditLogService;
         private readonly IUserManagementService _userManagementService;
+        private readonly IUtilityService _utilityService;
         public ReportlogService(ILogger<ReportlogService> logger,
-            IAuditLogService auditLogService,
+            IAuditLogService auditLogService, IUtilityService utilityService,
             IUserManagementService userManagementService,
             AppDbContext context)
         {
@@ -35,6 +39,7 @@ namespace qguardbackend.Core.Services
             _context = context;
             _auditLogService = auditLogService;
             _userManagementService = userManagementService;
+            _utilityService = utilityService;
         }
 
 
@@ -53,7 +58,8 @@ namespace qguardbackend.Core.Services
         {
             try
             {
-                var reportLog = new ReportLogs
+                var resultList = new List<ReportLogUploadResponseDto>();
+                var reportLog = new ReportLog
                 {
                     Name = model.Name,
                     Socials = model.Socials,
@@ -68,7 +74,7 @@ namespace qguardbackend.Core.Services
                     //CreatedBy = createdBy
                 };
 
-                await _context.ReportLogs.AddAsync(reportLog);
+                var added = await _context.ReportLogs.AddAsync(reportLog);
                 await _context.SaveChangesAsync();
 
                 var response = new ReportLogResponseDto
@@ -85,10 +91,76 @@ namespace qguardbackend.Core.Services
                     Country = reportLog.Country
                 };
 
+
+
+                foreach (var doc in model.Uploads)
+                {
+                    var uploadResult = await _utilityService.UploadBase64FileGetKeyAsync(new S3FileUploadRequestDtoV2
+                    {
+                        EntityName = "Distributor",
+                        CategoryName = "Certificates",
+                        FileName = $"{doc.FileName}_{Guid.NewGuid()}",
+                        FileString = doc.FilePath
+                    });
+
+                    if (string.IsNullOrWhiteSpace(uploadResult.URL)) continue;
+
+                    string cleanBase64 = ExtractBase64Data(doc.FilePath);
+
+                    // Calculate padding characters
+                    int paddingCount = 0;
+                    if (cleanBase64.EndsWith("=="))
+                        paddingCount = 2;
+                    else if (cleanBase64.EndsWith("="))
+                        paddingCount = 1;
+
+                    // Calculate file size: (base64_length * 3/4) - padding
+                    long file_Size = (cleanBase64.Length * 3L / 4L) - paddingCount;
+
+
+                    //var fileBytes = Convert.FromBase64String(doc.Document);
+                    //var mimeType = MimeMapping.MimeUtility.GetMimeMapping(doc.FileName);
+                    //var fileSize = fileBytes.Length;
+
+                    var document = new ReportLogUpload
+                    {
+                        ReportLogId = added.Entity.Id,
+                        UploadName = doc.FileName,
+
+                        UploadType = doc.DocumentsType,
+
+                        FilePath = uploadResult.URL,
+                        FileKey = uploadResult.Key,
+                        //FileSize = fileSize,
+                        FileSize = file_Size,
+                        //MimeType = mimeType,
+
+                    };
+
+                    _context.ReportLogUploads.Add(document);
+                    await _context.SaveChangesAsync();
+
+
+
+                    resultList.Add(new ReportLogUploadResponseDto
+                    {
+                        Id = document.Id,
+                        FileName = document.UploadName,
+                        DocumentsType = document.UploadType,
+
+                        FilePath = document.FilePath,
+                        FileSize = document.FileSize,
+                        MimeType = document.MimeType
+                    });
+
+                }
+
+                response.ReportLogUploads = resultList;
+
                 await _auditLogService.AddToAudit(
-                    (int)AuditActionType.Create,
-                    "ReportLogs",
-                    $"User [{createdBy}] created report log [{reportLog.Name}] at {DateTime.UtcNow}.");
+                (int)AuditActionType.Create,
+                "ReportLogs",
+                $"User [{createdBy}] created report log [{reportLog.Name}] at {DateTime.UtcNow}.");
 
                 return CustomResult<ReportLogResponseDto>.Success(response);
             }
@@ -100,6 +172,23 @@ namespace qguardbackend.Core.Services
                     ResponseCodes.SystemExceptionErrorCode);
             }
         }
+        public static string ExtractBase64Data(string dataUrl)
+        {
+            if (string.IsNullOrEmpty(dataUrl))
+                return string.Empty;
+
+            // Check if it's a data URL (starts with "data:")
+            if (dataUrl.StartsWith("data:"))
+            {
+                int commaIndex = dataUrl.IndexOf(',');
+                if (commaIndex >= 0 && commaIndex < dataUrl.Length - 1)
+                {
+                    return dataUrl.Substring(commaIndex + 1);
+                }
+            }
+
+            return dataUrl; // Return as-is if not a data URL
+        }
 
         public async Task<CustomResult<ReportLogResponseDto>> Update(
     long id,
@@ -108,13 +197,15 @@ namespace qguardbackend.Core.Services
         {
             try
             {
+
+                var resultList = new List<ReportLogUploadResponseDto>();
                 var reportLog = await _context.ReportLogs
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 if (reportLog == null)
                 {
                     return CustomResult<ReportLogResponseDto>.ErrorOccured(
-                        $"Report log with id [{id}] not found.","99");
+                        $"Report log with id [{id}] not found.", "99");
                 }
 
                 // Update fields
@@ -146,6 +237,91 @@ namespace qguardbackend.Core.Services
                     State = reportLog.State,
                     Country = reportLog.Country
                 };
+
+
+
+                //TODO: remove all old uploads from table and from S3
+
+                var removeOldFiles = await _context.ReportLogUploads.Where(x => x.ReportLogId == id).ToListAsync();
+
+
+                if (removeOldFiles.Any())
+                {
+                    foreach (var item in removeOldFiles)
+                    {//remove from s3
+
+                    }
+                    _context.ReportLogUploads.RemoveRange(removeOldFiles);
+
+                }
+
+
+
+                foreach (var doc in model.Uploads)
+                {
+                    var uploadResult = await _utilityService.UploadBase64FileGetKeyAsync(new S3FileUploadRequestDtoV2
+                    {
+                        EntityName = "Distributor",
+                        CategoryName = "Certificates",
+                        FileName = $"{doc.FileName}_{Guid.NewGuid()}",
+                        FileString = doc.FilePath
+                    });
+
+                    if (string.IsNullOrWhiteSpace(uploadResult.URL)) continue;
+
+                    string cleanBase64 = ExtractBase64Data(doc.FilePath);
+
+                    // Calculate padding characters
+                    int paddingCount = 0;
+                    if (cleanBase64.EndsWith("=="))
+                        paddingCount = 2;
+                    else if (cleanBase64.EndsWith("="))
+                        paddingCount = 1;
+
+                    // Calculate file size: (base64_length * 3/4) - padding
+                    long file_Size = (cleanBase64.Length * 3L / 4L) - paddingCount;
+
+
+                    //var fileBytes = Convert.FromBase64String(doc.Document);
+                    //var mimeType = MimeMapping.MimeUtility.GetMimeMapping(doc.FileName);
+                    //var fileSize = fileBytes.Length;
+
+                    var document = new ReportLogUpload
+                    {
+                        ReportLogId = id,
+                        UploadName = doc.FileName,
+
+                        UploadType = doc.DocumentsType,
+
+                        FilePath = uploadResult.URL,
+                        FileKey = uploadResult.Key,
+                        //FileSize = fileSize,
+                        FileSize = file_Size,
+                        //MimeType = mimeType,
+
+                    };
+
+                    _context.ReportLogUploads.Add(document);
+                    await _context.SaveChangesAsync();
+
+
+
+                    resultList.Add(new ReportLogUploadResponseDto
+                    {
+                        Id = document.Id,
+                        FileName = document.UploadName,
+                        DocumentsType = document.UploadType,
+
+                        FilePath = document.FilePath,
+                        FileSize = document.FileSize,
+                        MimeType = document.MimeType
+                    });
+
+                }
+
+                response.ReportLogUploads = resultList;
+
+
 
                 await _auditLogService.AddToAudit(
                     (int)AuditActionType.Edit,
@@ -190,28 +366,13 @@ namespace qguardbackend.Core.Services
         {
             try
             {
-                IQueryable<ReportLogs> records = _context.ReportLogs
+                IQueryable<ReportLog> records = _context.ReportLogs
                                             //.Include(x => x.Institution)
                                             .OrderByDescending(x => x.CreatedAt);
 
                 var end = AddTimeSpan(filter.EndDate ?? DateTime.Now);
 
-                //if (!string.IsNullOrEmpty(filter.CreatedBy))
-                //{
-                //    records = records.Where(x => x.UserId.ToLower() == filter.CreatedBy.ToLower());
-                //}
 
-                //if (!string.IsNullOrEmpty(filter.Action))
-                //{
-                //    records = records.Where(x => x.Action.ToLower() == filter.Action.ToLower());
-                //}
-                //if (!string.IsNullOrEmpty(filter.EventType))
-                //{
-                //    if (Enum.TryParse(filter.EventType, true, out AuditActionType actionType))
-                //    {
-                //        records = records.Where(x => x.EventType == (int)actionType);
-                //    }
-                //}
 
                 if (!string.IsNullOrWhiteSpace(filter.SearchWord))
                 {
@@ -220,6 +381,9 @@ namespace qguardbackend.Core.Services
                         x.Address.ToLower().Contains(searchWord) ||
                         x.State.ToLower().Contains(searchWord) ||
                         x.Description.ToLower().Contains(searchWord) ||
+                        x.NearestBustop.ToLower().Contains(searchWord) ||
+                        x.Country.ToLower().Contains(searchWord) ||
+                        x.Socials.ToLower().Contains(searchWord) ||
                         x.LGA.ToLower().Contains(searchWord) ||
                         x.Name.ToLower().Contains(searchWord));
                 }
@@ -241,7 +405,26 @@ namespace qguardbackend.Core.Services
 
                 var resultData = await records.Select(record => new ReportLogResponseDto
                 {
+                    Id = record.Id,
+                    Name = record.Name,
+                    Address = record.Address,
+                    State = record.State,
+                    Description = record.Description,
+                    City = record.City,
+                    Country = record.Country,
+                    Socials = record.Socials,
+                    LGA = record.LGA,
+                    NearestBustop = record.NearestBustop,
+                    ReportLogUploads = _context.ReportLogUploads
+                    .Where(x => x.ReportLogId == record.Id)
+                    .Select(a => new ReportLogUploadResponseDto
+                    {
 
+                        Id = a.Id,
+                        DocumentsType = a.UploadType,
+                        FileName = a.UploadName,
+                        FilePath = a.FilePath
+                    }).ToList(),
                 }).ToListAsync();
 
                 // Handle pagination
@@ -275,10 +458,23 @@ namespace qguardbackend.Core.Services
                 {
                     Id = record.Id,
                     Name = record.Name,
-                    LGA = record.LGA,
-                    State = record.State,
                     Address = record.Address,
-
+                    State = record.State,
+                    Description = record.Description,
+                    City = record.City,
+                    Country = record.Country,
+                    Socials = record.Socials,
+                    LGA = record.LGA,
+                    NearestBustop = record.NearestBustop,
+                    ReportLogUploads = _context.ReportLogUploads
+                    .Where(x => x.ReportLogId == record.Id)
+                    .Select(a => new ReportLogUploadResponseDto
+                    {
+                        Id = a.Id,
+                        DocumentsType = a.UploadType,
+                        FileName = a.UploadName,
+                        FilePath = a.FilePath
+                    }).ToList(),
 
                 };
                 return CustomResult<ReportLogResponseDto>.Success(model);
