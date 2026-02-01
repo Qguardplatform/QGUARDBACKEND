@@ -22,15 +22,15 @@ using System.Threading.Tasks;
 
 namespace qguardbackend.Core.Services
 {
-    public class ReportlogService : IReportlogService
+    public class BlackmailReportlogService : IBlackmailReportlogService
     {
 
-        private readonly ILogger<ReportlogService> _logger;
+        private readonly ILogger<BlackmailReportlogService> _logger;
         private readonly AppDbContext _context;
         private readonly IAuditLogService _auditLogService;
         private readonly IUserManagementService _userManagementService;
         private readonly IUtilityService _utilityService;
-        public ReportlogService(ILogger<ReportlogService> logger,
+        public BlackmailReportlogService(ILogger<BlackmailReportlogService> logger,
             IAuditLogService auditLogService, IUtilityService utilityService,
             IUserManagementService userManagementService,
             AppDbContext context)
@@ -52,14 +52,14 @@ namespace qguardbackend.Core.Services
         }
 
 
-        public async Task<CustomResult<ReportLogResponseDto>> Create(
-       ReportLogsRequestDto model,
+        public async Task<CustomResult<BlackmailReportLogResponseDto>> Create(
+       BlackmailReportLogsRequestDto model,
        string createdBy)
         {
             try
             {
                 var resultList = new List<ReportLogUploadResponseDto>();
-                var reportLog = new ReportLog
+                var reportLog = new BlackmailReportLog
                 {
                     Name = model.Name,
                     Socials = model.Socials,
@@ -74,10 +74,10 @@ namespace qguardbackend.Core.Services
                     //CreatedBy = createdBy
                 };
 
-                var added = await _context.ReportLogs.AddAsync(reportLog);
+                var added = await _context.BlackmailReportLogs.AddAsync(reportLog);
                 await _context.SaveChangesAsync();
 
-                var response = new ReportLogResponseDto
+                var response = new BlackmailReportLogResponseDto
                 {
                     Id = reportLog.Id,
                     Name = reportLog.Name,
@@ -122,9 +122,9 @@ namespace qguardbackend.Core.Services
                     //var mimeType = MimeMapping.MimeUtility.GetMimeMapping(doc.FileName);
                     //var fileSize = fileBytes.Length;
 
-                    var document = new ReportLogUpload
+                    var document = new BlackmailReportLogUpload
                     {
-                        ReportLogId = added.Entity.Id,
+                        BlackmailReportLogId = added.Entity.Id,
                         UploadName = doc.FileName,
 
                         UploadType = doc.DocumentsType,
@@ -137,7 +137,7 @@ namespace qguardbackend.Core.Services
 
                     };
 
-                    _context.ReportLogUploads.Add(document);
+                    _context.BlackmailReportLogUploads.Add(document);
                     await _context.SaveChangesAsync();
 
 
@@ -162,12 +162,12 @@ namespace qguardbackend.Core.Services
                 "ReportLogs",
                 $"User [{createdBy}] created report log [{reportLog.Name}] at {DateTime.UtcNow}.");
 
-                return CustomResult<ReportLogResponseDto>.Success(response);
+                return CustomResult<BlackmailReportLogResponseDto>.Success(response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return CustomResult<ReportLogResponseDto>.ErrorOccured(
+                return CustomResult<BlackmailReportLogResponseDto>.ErrorOccured(
                     ex.Message,
                     ResponseCodes.SystemExceptionErrorCode);
             }
@@ -190,21 +190,21 @@ namespace qguardbackend.Core.Services
             return dataUrl; // Return as-is if not a data URL
         }
 
-        public async Task<CustomResult<ReportLogResponseDto>> Update(
+        public async Task<CustomResult<BlackmailReportLogResponseDto>> Update(
     long id,
-    ReportLogsRequestDto model,
+    BlackmailReportLogsRequestDto model,
     string createdBy)
         {
             try
             {
 
                 var resultList = new List<ReportLogUploadResponseDto>();
-                var reportLog = await _context.ReportLogs
+                var reportLog = await _context.BlackmailReportLogs
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 if (reportLog == null)
                 {
-                    return CustomResult<ReportLogResponseDto>.ErrorOccured(
+                    return CustomResult<BlackmailReportLogResponseDto>.ErrorOccured(
                         $"Report log with id [{id}] not found.", "99");
                 }
 
@@ -224,7 +224,7 @@ namespace qguardbackend.Core.Services
 
                 await _context.SaveChangesAsync();
 
-                var response = new ReportLogResponseDto
+                var response = new BlackmailReportLogResponseDto
                 {
                     Id = reportLog.Id,
                     Name = reportLog.Name,
@@ -242,7 +242,7 @@ namespace qguardbackend.Core.Services
 
                 //TODO: remove all old uploads from table and from S3
 
-                var removeOldFiles = await _context.ReportLogUploads.Where(x => x.ReportLogId == id).ToListAsync();
+                var removeOldFiles = await _context.BlackmailReportLogUploads.Where(x => x.BlackmailReportLogId == id).ToListAsync();
 
 
                 if (removeOldFiles.Any())
@@ -251,7 +251,7 @@ namespace qguardbackend.Core.Services
                     {//remove from s3
 
                     }
-                    _context.ReportLogUploads.RemoveRange(removeOldFiles);
+                    _context.BlackmailReportLogUploads.RemoveRange(removeOldFiles);
 
                 }
 
@@ -286,9 +286,9 @@ namespace qguardbackend.Core.Services
                     //var mimeType = MimeMapping.MimeUtility.GetMimeMapping(doc.FileName);
                     //var fileSize = fileBytes.Length;
 
-                    var document = new ReportLogUpload
+                    var document = new BlackmailReportLogUpload
                     {
-                        ReportLogId = id,
+                        BlackmailReportLogId = id,
                         UploadName = doc.FileName,
 
                         UploadType = doc.DocumentsType,
@@ -301,7 +301,7 @@ namespace qguardbackend.Core.Services
 
                     };
 
-                    _context.ReportLogUploads.Add(document);
+                    _context.BlackmailReportLogUploads.Add(document);
                     await _context.SaveChangesAsync();
 
 
@@ -328,12 +328,12 @@ namespace qguardbackend.Core.Services
                     "ReportLogs",
                     $"User [{createdBy}] updated report log [{reportLog.Name}] at {DateTime.UtcNow}.");
 
-                return CustomResult<ReportLogResponseDto>.Success(response);
+                return CustomResult<BlackmailReportLogResponseDto>.Success(response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return CustomResult<ReportLogResponseDto>.ErrorOccured(
+                return CustomResult<BlackmailReportLogResponseDto>.ErrorOccured(
                     ex.Message,
                     ResponseCodes.SystemExceptionErrorCode);
             }
@@ -345,13 +345,13 @@ namespace qguardbackend.Core.Services
             {
                 try
                 {
-                    var audit = await _context.ReportLogs.FirstOrDefaultAsync(x => x.Id == id);
+                    var audit = await _context.BlackmailReportLogs.FirstOrDefaultAsync(x => x.Id == id);
                     if (audit is null)
                     {
                         return CustomResult<string>.ErrorOccured("Record not found", ResponseCodes.NotFoundErrorCode);
                     }
 
-                    _context.ReportLogs.Remove(audit);
+                    _context.BlackmailReportLogs.Remove(audit);
                     await _context.SaveChangesAsync();
 
                     return CustomResult<string>.Success(ResponseCodes.SuccessCode, "Report successfully deleted");
@@ -362,11 +362,11 @@ namespace qguardbackend.Core.Services
                 }
             }
         }
-        public async Task<CustomResult<PaginatedResult<ReportLogResponseDto>>> GetAll(QueryModelMini filter)
+        public async Task<CustomResult<PaginatedResult<BlackmailReportLogResponseDto>>> GetAll(QueryModelMini filter)
         {
             try
             {
-                IQueryable<ReportLog> records = _context.ReportLogs
+                IQueryable<BlackmailReportLog> records = _context.BlackmailReportLogs
                                             //.Include(x => x.Institution)
                                             .OrderByDescending(x => x.CreatedAt);
 
@@ -403,7 +403,7 @@ namespace qguardbackend.Core.Services
                     records = records.OrderByDescending(x => x.CreatedAt);
                 }
 
-                var resultData = await records.Select(record => new ReportLogResponseDto
+                var resultData = await records.Select(record => new BlackmailReportLogResponseDto
                 {
                     Id = record.Id,
                     Name = record.Name,
@@ -415,8 +415,8 @@ namespace qguardbackend.Core.Services
                     Socials = record.Socials,
                     LGA = record.LGA,
                     NearestBustop = record.NearestBustop,
-                    ReportLogUploads = _context.ReportLogUploads
-                    .Where(x => x.ReportLogId == record.Id)
+                    ReportLogUploads = _context.BlackmailReportLogUploads
+                    .Where(x => x.BlackmailReportLogId == record.Id)
                     .Select(a => new ReportLogUploadResponseDto
                     {
 
@@ -432,7 +432,7 @@ namespace qguardbackend.Core.Services
                     ? resultData.ToPageList(filter.PageNumber.Value, filter.PageSize.Value)
                     : resultData.NoPaginate(0, 0);
 
-                return CustomResult<PaginatedResult<ReportLogResponseDto>>.Success(responseData);
+                return CustomResult<PaginatedResult<BlackmailReportLogResponseDto>>.Success(responseData);
             }
             catch (Exception ex)
             {
@@ -443,18 +443,18 @@ namespace qguardbackend.Core.Services
 
         }
 
-        public async Task<CustomResult<ReportLogResponseDto>> GetById(long id)
+        public async Task<CustomResult<BlackmailReportLogResponseDto>> GetById(long id)
         {
             try
             {
-                var record = await _context.ReportLogs
+                var record = await _context.BlackmailReportLogs
                     .FirstOrDefaultAsync(x => x.Id == id);
                 if (record == null)
                 {
-                    return CustomResult<ReportLogResponseDto>.ErrorOccured("Record not found", ResponseCodes.NotFoundErrorCode);
+                    return CustomResult<BlackmailReportLogResponseDto>.ErrorOccured("Record not found", ResponseCodes.NotFoundErrorCode);
                 }
 
-                var model = new ReportLogResponseDto
+                var model = new BlackmailReportLogResponseDto
                 {
                     Id = record.Id,
                     Name = record.Name,
@@ -466,8 +466,8 @@ namespace qguardbackend.Core.Services
                     Socials = record.Socials,
                     LGA = record.LGA,
                     NearestBustop = record.NearestBustop,
-                    ReportLogUploads = _context.ReportLogUploads
-                    .Where(x => x.ReportLogId == record.Id)
+                    ReportLogUploads = _context.BlackmailReportLogUploads
+                    .Where(x => x.BlackmailReportLogId == record.Id)
                     .Select(a => new ReportLogUploadResponseDto
                     {
                         Id = a.Id,
@@ -477,12 +477,12 @@ namespace qguardbackend.Core.Services
                     }).ToList(),
 
                 };
-                return CustomResult<ReportLogResponseDto>.Success(model);
+                return CustomResult<BlackmailReportLogResponseDto>.Success(model);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return CustomResult<ReportLogResponseDto>.ErrorOccured(ex.Message, ResponseCodes.SystemExceptionErrorCode);
+                return CustomResult<BlackmailReportLogResponseDto>.ErrorOccured(ex.Message, ResponseCodes.SystemExceptionErrorCode);
             }
         }
     }

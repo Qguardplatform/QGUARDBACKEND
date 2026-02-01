@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace qguardbackend.Data.DTOs.ResponseDto
 {
-    public class ReportLogResponseDto
+    public class BlackmailReportLogResponseDto
     {
      
             public long Id { get; set; }

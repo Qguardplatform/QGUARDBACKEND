@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace qguardbackend.Data.DTOs.RequestDto
 {
-    public class ReportLogsRequestDto
+    public class BlackmailReportLogsRequestDto
     {
         public string Name { get; set; }
         public string Socials { get; set; }

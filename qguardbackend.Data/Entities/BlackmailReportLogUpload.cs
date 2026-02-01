@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace qguardbackend.Data.Entities
 {
-    public class ReportLogUpload : BaseEntity
+    public class BlackmailReportLogUpload : BaseEntity
     {
-        public long ReportLogId { get; set; }
+        public long BlackmailReportLogId { get; set; }
         public string? UploadType { get; set; }
         public string? UploadName { get; set; }
         public string? Extenstion { get; set; }
@@ -23,7 +23,7 @@ namespace qguardbackend.Data.Entities
         public string? FileKey { get; set; }
         public string? UploadNote { get; set; }
 
-        [ForeignKey("ReportLogId")]
-        public ReportLog ReportLog { get; set; }
+        [ForeignKey("BlackmailReportLogId")]
+        public BlackmailReportLog BlackmailReportLog { get; set; }
     }
 }

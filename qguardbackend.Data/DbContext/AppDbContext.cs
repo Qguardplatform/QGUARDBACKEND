@@ -21,8 +21,9 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
     public DbSet<AuditLog> AuditLogs { get; set; }
     public DbSet<RefreshToken> RefreshToken { get; set; }
     public DbSet<Setting> Settings { get; set; }
-    public DbSet<ReportLog> ReportLogs { get; set; }
-    public DbSet<ReportLogUpload> ReportLogUploads { get; set; }
+    public DbSet<BlackmailReportLog> BlackmailReportLogs { get; set; }
+    public DbSet<BlackmailReportLogUpload> BlackmailReportLogUploads { get; set; }
+    public DbSet<LocationReportLog> LocationReportLogs { get; set; }
     public DbSet<Priviledge> Priviledges { get; set; }
     public DbSet<RolePriviledge> RolePriviledges { get; set; }
     public DbSet<Country> Countries { get; set; }

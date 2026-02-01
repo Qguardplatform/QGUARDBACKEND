@@ -1,144 +1,181 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Verify Your Account</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        QGuard - Welcome
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
     <style>
-        body,
-        p,
-        a,
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+            border: none;
+            min-width: 0;
+        }
+
         h1,
         h2,
-        h3 {
-            font-family: 'Poppins', Arial, sans-serif !important;
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-size: 1rem;
         }
 
-        /* Reset for consistent rendering */
-        body,
-        table,
-        td,
-        a {
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
+        p, li {
+            line-height: 1.5rem;
         }
 
-        table {
-            border-collapse: collapse !important;
+        :root {
+            --font-sans: 'Inter', sans-serif;
+            --font-header: 'Rethink Sans', sans-serif;
+            --color-primary: #4B0082;
+            --border-radius-sm: 0.75rem;
         }
 
         body {
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background-color: #f5f5f5;
+            font-family: var(--font-sans);
         }
 
-        /* Mobile styles */
-        @media screen and (max-width: 600px) {
-            .email-container {
-                width: 100% !important;
-                padding: 0 !important;
+        .title {
+            font-family: var(--font-header);
+        }
+
+        .main > * {
+            margin-bottom: 1.25rem;
+        }
+
+        ul {
+            margin-left: 0.75rem;
+        }
+
+            ul > li {
+                margin: 0.75rem;
             }
 
-            .email-content {
-                padding: 20px !important;
+        .button {
+            background-color: transparent;
+            padding: 0.875rem 1.25rem;
+            font-size: 0.875rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+        }
+
+            .button.primary {
+                background-color: var(--color-primary);
+                color: #fff;
             }
 
-            .button {
-                width: 100% !important;
+        a {
+            text-decoration: none;
+        }
+
+            a > * {
+                pointer-events: none;
+            }
+
+        @media screen and (max-width: 400px) {
+            .stack {
                 display: block !important;
-                text-align: center !important;
-            }
-
-            .link-box {
-                font-size: 13px !important;
-                word-break: break-all;
+                width: 100% !important;
+                text-align: left !important;
             }
         }
     </style>
 </head>
+<body style="background-color: #F5F5F5; padding: 1rem">
+    <div style="background-color: white; width: 100%; max-width: 30rem; margin: 0 auto; border-radius: 10px 10px 0 0;">
+        <header style="background-color: rgba(75, 0, 130, 0.12); padding: 1.25rem; border-radius: 10px">
+            <div>
+                <img src="https://q-guard.vercel.app/logo.png" width="36">
+            </div>
+            <div style="background-color: #eee; margin-top: 1rem; height: 10rem; width: 100%">
+                <img src="https://q-guard.vercel.app/template-img-1.png" style="width: 100%; height: 100%; object-fit: cover">
+            </div>
+            <div style="margin-top: 1rem;">
+                <h1 class="title" style="font-size: 1.875rem">
+                    Welcome to QGuard: Your Safety Community
+                </h1>
+            </div>
+        </header>
+        <main class="main" style="padding: 2rem 1.25rem;">
+            <p>
+                Hi ##EMAIL##,
+            </p>
+            <p>
+                Welcome to QGuard. You are now part of a community dedicated to looking out for one another.
+            </p>
+            <p>
+                Your Password is  ##PASSWORD##
+            </p>
 
-<body style="background-color: #f5f5f5; font-family: Arial, sans-serif; margin: 0; padding: 0;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
-           style="background-color: #f5f5f5; padding: 20px 0;">
-        <tr>
-            <td align="center">
-                <table role="presentation" class="email-container" width="500" cellspacing="0" cellpadding="0"
-                       border="0" style="background-color: #ffffff; width: 500px; border-radius: 4px; overflow: hidden;">
-                    <!-- Header -->
-                    <tr>
-                        <td style="padding: 20px; border-bottom: 1px solid #D2D5DA">
-                            <img src="./exam-portal-logo.png" alt="qguardbackend" style="height: 24px;">
-                        </td>
-                    </tr>
-                    <!-- Body -->
-                    <tr>
-                        <td class="email-content" style="padding: 30px;">
-                            <h2 style="margin: 0 0 15px; color: #111827; font-size: 22px; font-weight: 700;">
-                                Verify your
-                                account
-                            </h2>
-                            <p style="margin: 0 0 15px; color: #333; font-size: 14px;">Hi ##NAME##</p>
-                            <p style="margin: 0 0 15px; color: #333; font-size: 14px;">
-                                We’re glad to have you onboard!<br>
-                                Your account has been created on the Examination Portal.
-                            </p>
-                            <p style="margin: 0 0 15px; color: #333; font-size: 14px;">
-                                Here are your account login
-                                details.
-                            </p>
-                            <p style="margin: 0 0 5px; font-size: 14px;">
-                                Email Address: <strong>
-                                    <a href="mailto:##EMAIL#"
-                                       style="color: #374151; font-weight: 600; text-decoration: none;">##EMAIL##</a>
-                                </strong>
-                            </p>
-                            <p style="margin: 0 0 25px; font-size: 14px;">
-                                Password: <strong>
-                                    <span style="color: #374151; font-weight: 600;">##PASSWORD##</span>
-                                </strong>
-                            </p>
-                            <!-- Button -->
-                            <a href="##URL##" class="button"
-                               style="display: inline-block; background-color: #F26628; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; font-size: 14px;">
-                                Proceed to Login
-                            </a>
+            <p>
+                We built QGuard with a single mission: to help you make informed decisions about your safety without exposing your identity.
+            </p>
+            <p>
+                How QGuard helps you stay safe:
+            </p>
+            <p>
+                <ul>
+                    <li>
+                        🛡️ Run a Safety Lookup: Before meeting someone new, check your meet-up location and their phone number against our community reported database to see if the location has been flagged.
+                    </li>
+                    <li>
+                        📢 Report Incidents Anonymously: Help protect others by reporting unsafe individuals or "kito" incidents. Your reports are vetted by trusted members, not algorithms.
+                    </li>
+                    <li>
+                        🔒 Privacy First: We never publish exact addresses, we do not permanently store images, and we do not "out" anyone.
+                    </li>
+                </ul>
+            </p>
+            <p>
+                Thank you for trusting us. Together, we are safer.
+            </p>
+            <div>
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                    <button class="button primary">
+                        Get started
+                    </button>
+                </a>
+            </div>
 
-                            <p style="margin-top: 25px; margin-bottom: 10px; color: #333; font-size: 14px;">
-                                You can also
-                                copy the link and paste it on your browser:
-                            </p>
+            <div>
+                <p>Stay Safe,</p>
+                <p><b>The QQuard Team</b></p>
+            </div>
+        </main>
 
-                            <!-- Link Box -->
-                            <div class="link-box"
-                                 style="background-color: #FFEDE0; padding: 12px; border-radius: 4px; color: #F26628; font-size: 12px; letter-spacing: 0.2px;">
-                                ##URL##
-                            </div>
+        <footer style="background-color: #E8E8E8; color: #5C5C5C; padding: 2rem 1.25rem;">
+            <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                <tr>
+                    <td class="stack" style="padding:8px 0;">
+                        <p style="margin:0;font-size:12px;font-weight:500;">
+                            © 2026 QQuard. All rights reserved
+                        </p>
+                    </td>
+                    <td class="stack" align="right" style="padding:8px 0;">
+                        <a href="[facebook link]" style="margin-right: 0.2rem" target="_blank" rel="noopener noreferrer">
+                            <img src="https://q-guard.vercel.app/facebook-logo.png" width="18">
+                        </a>
 
-                            <p style="margin-top: 10px; margin-bottom: 10px; color: #333; font-size: 14px;">
-                                To secure
-                                your account, you will
-                                be required to change your account password on the first login.
-                            </p>
+                        <a href="[x link]" style="margin-right: 0.2rem" target="_blank" rel="noopener noreferrer">
+                            <img src="https://q-guard.vercel.app/x-logo.png" width="16">
+                        </a>
 
-                            <!-- Footer -->
-                            <p style="margin-top: 30px; background-color: #ffffff; font-size: 14px; color: #333;">
-
-                                If you have any challenge accessing your account kindly reach out to us on
-                                <a href="mailto:support@vigilearn.com"
-                                   style="color: #000; font-weight: bold; text-decoration: none;">support@qguardplatform.com</a>.
-                            </p>
-                        </td>
-
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+                        <a href="[instagram link]" target="_blank" rel="noopener noreferrer">
+                            <img src="https://q-guard.vercel.app/instagram-logo.png" width="18">
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </footer>
+    </div>
 </body>
-
 </html>

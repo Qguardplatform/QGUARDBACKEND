@@ -43,7 +43,7 @@ namespace qguardbackend.Core.Services
         {
             _settingsService = settingsService;
             _logger = logger;
-
+            _configuration = configuration;
 
             _logger = logger;
             _awsOptions = awsOptions.Value;
@@ -282,8 +282,46 @@ namespace qguardbackend.Core.Services
         }
 
 
-
         public async Task<string> UploadFileAsync(Stream fileStream, string fileName, string contentType, string extension)
+        {
+            try
+            {
+
+
+                var filename = $"{fileName.Replace(" ", "_")}{Guid.NewGuid()}{extension}";
+
+                var uploadRequest = new TransferUtilityUploadRequest
+                {
+                    InputStream = fileStream,
+                    Key = filename,
+                    //Key = $"{fileName.Replace(" ", "_")}{extension}",
+                    BucketName = _bucketName,
+                    ContentType = contentType,
+                    //CannedACL = S3CannedACL.PublicRead // Makes the file publicly accessible
+                };
+
+                using var transferUtility = new TransferUtility(_Accesskey, _SecretKey, RegionEndpoint.USEast1);
+                await transferUtility.UploadAsync(uploadRequest);
+
+                string fileUrl = $"https://{_awsOptions.BucketName}.s3.amazonaws.com/{filename}";
+                return fileUrl;
+            }
+            catch (AmazonS3Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred in {Repo}.{MethodName}", typeof(S3Service).Name,
+                    nameof(UploadFileAsync));
+
+                throw new Exception($"S3 file upload failed: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred in {Repo}.{MethodName}", typeof(S3Service).Name,
+                    nameof(UploadFileAsync));
+
+                throw new Exception($"S3 file upload failed: {ex.Message}");
+            }
+        }
+        public async Task<string> UploadFileAsync111(Stream fileStream, string fileName, string contentType, string extension)
         {
             try
             {
@@ -291,7 +329,7 @@ namespace qguardbackend.Core.Services
                 {
                     InputStream = fileStream,
                     Key = $"{fileName.Replace(" ", "_")}{extension}",
-                    BucketName = _bucketName,
+                    BucketName = _bucketName,  
                     ContentType = contentType,
                     //CannedACL = S3CannedACL.PublicRead // Makes the file publicly accessible
                 };

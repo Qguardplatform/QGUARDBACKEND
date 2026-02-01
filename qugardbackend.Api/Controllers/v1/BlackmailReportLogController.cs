@@ -11,11 +11,11 @@ using qguardbackend.Data.DTOs.Results;
 namespace qguardbackend.Controllers.v1
 {
     [ApiVersion("1.0")]
-    public class ReportLogController : BaseController
+    public class BlackmailReportLogController : BaseController
     {
-        private readonly IReportlogService _reportService;
+        private readonly IBlackmailReportlogService _reportService;
 
-        public ReportLogController(IReportlogService reportService)
+        public BlackmailReportLogController(IBlackmailReportlogService reportService)
         {
             _reportService = reportService;
         }
@@ -23,8 +23,8 @@ namespace qguardbackend.Controllers.v1
 
 
         [HttpPost("create")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomResult<ReportLogResponseDto>))]
-        public async Task<IActionResult> Create([FromBody] ReportLogsRequestDto model)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomResult<BlackmailReportLogResponseDto>))]
+        public async Task<IActionResult> Create([FromBody] BlackmailReportLogsRequestDto model)
         {
             if (!ModelState.IsValid) return BadRequest(GetModelStateErrors(ModelState));
             var response = await _reportService.Create(model, CurrentUser.Email);
@@ -37,8 +37,8 @@ namespace qguardbackend.Controllers.v1
 
 
         [HttpPost("update-report-log/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomResult<ReportLogResponseDto>))]
-        public async Task<IActionResult> Update(long id,[FromBody] ReportLogsRequestDto model)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomResult<BlackmailReportLogResponseDto>))]
+        public async Task<IActionResult> Update(long id,[FromBody] BlackmailReportLogsRequestDto model)
         {
             if (!ModelState.IsValid) return BadRequest(GetModelStateErrors(ModelState));
             var response = await _reportService.Update(id,model, CurrentUser.Email);
@@ -51,7 +51,7 @@ namespace qguardbackend.Controllers.v1
 
 
         [HttpGet("get-all-report-log")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<CustomResult<PaginatedResult<ReportLogResponseDto>>>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<CustomResult<PaginatedResult<BlackmailReportLogResponseDto>>>))]
         public async Task<IActionResult> GetAll([FromQuery] QueryModelMini filter)
         {
             var response = await _reportService.GetAll(filter);
@@ -63,7 +63,7 @@ namespace qguardbackend.Controllers.v1
         }
 
         [HttpGet("get-by-id/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomResult<ReportLogResponseDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomResult<BlackmailReportLogResponseDto>))]
         public async Task<IActionResult> GetById([FromRoute] long id)
         {
             var response = await _reportService.GetById(id);
